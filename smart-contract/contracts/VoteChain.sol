@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./TransferHelper.sol";
 
-interface IVoteChainDonorNFT {
+interface IVoteChainNFT {
     function mint(address wallet) external;
 }
 
@@ -55,9 +55,17 @@ contract VoteChain is Ownable, ReentrancyGuard {
     // Donor NFT
     address public donorNFT;
 
+    // Voter NFT
+    address public voterNFT;
+
     function updateDonorNFT(address nft) public onlyOwner {
         require(nft != address(0), "UpdateDonorNFT:: Invalid Address");
         donorNFT = nft;
+    }
+
+    function updateVoterNFT(address nft) public onlyOwner {
+        require(nft != address(0), "UpdateVoterNFT:: Invalid Address");
+        voterNFT = nft;
     }
 
     // Events
@@ -144,7 +152,7 @@ contract VoteChain is Ownable, ReentrancyGuard {
             amount
         );
         updateCategoryDonation(category, amount);
-        IVoteChainDonorNFT(donorNFT).mint(msg.sender);
+        IVoteChainNFT(donorNFT).mint(msg.sender);
         emit Donated(msg.sender, category, token, amount, block.timestamp);
     }
 
@@ -221,6 +229,7 @@ contract VoteChain is Ownable, ReentrancyGuard {
         );
         require(isDonor(msg.sender), "VoteToProposal:: Only donors can vote");
         voteCountForProposal[proposalId]++;
+        IVoteChainNFT(voterNFT).mint(msg.sender);
         emit Voted(proposalId, msg.sender, block.timestamp);
     }
 
