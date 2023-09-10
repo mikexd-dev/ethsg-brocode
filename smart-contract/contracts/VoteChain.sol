@@ -15,13 +15,19 @@ contract VoteChain is Ownable {
     mapping(address => bool) public firstDonation;
 
     // Mapping of Donation categories
-    mapping(bytes32 => uint256) public donationCategory;
+    mapping(bytes32 => uint256) public donationAmountByCategory;
+
+    // Mapping of ProposalId and Categories
+    mapping(bytes32 => bytes32) public proposalCategories;
 
     // Mapping of Proposals
     mapping(bytes32 => bool) public proposals;
 
     // Mapping of Approved Proposals
     mapping(bytes32 => bool) public approvedProposals;
+
+    // Mapping of Proposals & No.of Votes
+    mapping(bytes32 => uint256) public voteCountForProposal;
 
     // Total No.of Proposals
     uint256 public totalProposals;
@@ -60,6 +66,7 @@ contract VoteChain is Ownable {
         string invoice,
         uint256 createdAt
     );
+    event Voted(bytes32 proposalId, address indexed votedBy, uint256 votedAt);
 
     // Update NPO Wallet Status
     function updateNPO(address _npo, bool _status) public onlyOwner {
@@ -88,7 +95,7 @@ contract VoteChain is Ownable {
         uint256 amount
     ) internal {
         bytes32 categoryHash = stringToKeccak256(category);
-        donationCategory[categoryHash] += amount;
+        donationAmountByCategory[categoryHash] += amount;
         trackUniqueDonor(category, msg.sender);
     }
 
@@ -101,6 +108,7 @@ contract VoteChain is Ownable {
         }
         if (!firstDonation[msg.sender]) {
             firstDonation[msg.sender] = true;
+            donorList[msg.sender] = true;
         }
     }
 
@@ -150,6 +158,7 @@ contract VoteChain is Ownable {
         vendorWallets[proposalId] = vendors;
         vendorAmounts[proposalId] = amounts;
         vendorInvoices[proposalId] = invoices;
+        proposalCategories[proposalId] = stringToKeccak256(category);
         totalProposals++;
         emit ProposalCreated(
             proposalId,
@@ -160,5 +169,37 @@ contract VoteChain is Ownable {
             invoices,
             block.timestamp
         );
+    }
+
+    // Get the Proposed Amount for a Proposal (will be paid to vendor)
+    function getProposedAmountByProposalId(
+        bytes32 proposalId
+    ) public view returns (uint256) {
+        uint256[] memory amounts = vendorAmounts[proposalId];
+        uint256 temp = 0;
+        for (uint256 i = 0; i < amounts.length; i++) {
+            temp = temp + amounts[i];
+        }
+        return temp;
+    }
+
+    // Check if a wallet is a donor
+    function isDonor(address wallet) public view returns (bool) {
+        return donorList[wallet];
+    }
+
+    // Vote for a Proposal
+    function voteToProposal(bytes32 proposalId) external {
+        uint256 totalProposedAmount = getProposedAmountByProposalId(proposalId);
+        uint256 balanceInCategory = donationAmountByCategory[
+            proposalCategories[proposalId]
+        ];
+        require(
+            balanceInCategory > totalProposedAmount,
+            "VoteToProposal:: Insufficiant Funds in the Category"
+        );
+        require(isDonor(msg.sender), "VoteToProposal:: Only donors can vote");
+        voteCountForProposal[proposalId]++;
+        emit Voted(proposalId, msg.sender, block.timestamp);
     }
 }
