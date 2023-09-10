@@ -5,6 +5,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./TransferHelper.sol";
 
+interface IVoteChainDonorNFT {
+    function mint(address wallet) external;
+}
+
 contract VoteChain is Ownable, ReentrancyGuard {
     // Mapping of NPO (Non-Profit Organization) & Status
     mapping(address => bool) public npoList;
@@ -47,6 +51,14 @@ contract VoteChain is Ownable, ReentrancyGuard {
 
     // Mapping of Proposal Id & Donated Token
     mapping(bytes32 => address) public proposalDonatedToken;
+
+    // Donor NFT
+    address public donorNFT;
+
+    function updateDonorNFT(address nft) public onlyOwner {
+        require(nft != address(0), "UpdateDonorNFT:: Invalid Address");
+        donorNFT = nft;
+    }
 
     // Events
     event NPOUpdated(address indexed npo, bool status);
@@ -132,8 +144,7 @@ contract VoteChain is Ownable, ReentrancyGuard {
             amount
         );
         updateCategoryDonation(category, amount);
-
-        // TODO: Mint Donor NFT
+        IVoteChainDonorNFT(donorNFT).mint(msg.sender);
         emit Donated(msg.sender, category, token, amount, block.timestamp);
     }
 
