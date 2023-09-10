@@ -35,6 +35,12 @@ contract VoteChain is Ownable {
     // Mapping of Vendor Invoices
     mapping(bytes32 => string) public vendorInvoices;
 
+    // Mapping of donationCategory, donor & status of donation
+    mapping(bytes32 => mapping(address => bool)) private categoryDonorRegistry;
+
+    // Mapping of Unique donors of a category
+    mapping(bytes32 => uint256) public uniqueDonorCount;
+
     // Events
     event NPOUpdated(address indexed npo, bool status);
     event DonorUpdated(address indexed donor, bool status);
@@ -82,9 +88,20 @@ contract VoteChain is Ownable {
         uint256 amount
     ) internal {
         bytes32 categoryHash = stringToKeccak256(category);
-        donationCategory[categoryHash] =
-            donationCategory[categoryHash] +
-            amount;
+        donationCategory[categoryHash] += amount;
+        trackUniqueDonor(category, msg.sender);
+    }
+
+    // Tracking of Uniqe Donors & First Time Donation
+    function trackUniqueDonor(string memory category, address donor) internal {
+        bytes32 categoryHash = stringToKeccak256(category);
+        if (!categoryDonorRegistry[categoryHash][donor]) {
+            categoryDonorRegistry[categoryHash][donor] = true;
+            uniqueDonorCount[categoryHash] += 1;
+        }
+        if (!firstDonation[msg.sender]) {
+            firstDonation[msg.sender] = true;
+        }
     }
 
     // Donate to Category
@@ -100,9 +117,8 @@ contract VoteChain is Ownable {
             amount
         );
         updateCategoryDonation(category, amount);
-        if (!firstDonation[msg.sender]) {
-            firstDonation[msg.sender] = true;
-        }
+
+        // TODO: Mint Donor NFT
         emit Donated(msg.sender, category, token, amount, block.timestamp);
     }
 
