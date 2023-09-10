@@ -47,6 +47,9 @@ contract VoteChain is Ownable {
     // Mapping of Unique donors of a category
     mapping(bytes32 => uint256) public uniqueDonorCount;
 
+    // Mapping of Proposal Id & Donated Token
+    mapping(bytes32 => address) public proposalDonatedToken;
+
     // Events
     event NPOUpdated(address indexed npo, bool status);
     event DonorUpdated(address indexed donor, bool status);
@@ -63,10 +66,16 @@ contract VoteChain is Ownable {
         string category,
         address[] vendors,
         uint256[] amounts,
+        address token,
         string invoice,
         uint256 createdAt
     );
     event Voted(bytes32 proposalId, address indexed votedBy, uint256 votedAt);
+    event Finalised(
+        bytes32 proposalId,
+        address finalisedBy,
+        uint256 finalisedAt
+    );
 
     // Update NPO Wallet Status
     function updateNPO(address _npo, bool _status) public onlyOwner {
@@ -104,7 +113,7 @@ contract VoteChain is Ownable {
         bytes32 categoryHash = stringToKeccak256(category);
         if (!categoryDonorRegistry[categoryHash][donor]) {
             categoryDonorRegistry[categoryHash][donor] = true;
-            uniqueDonorCount[categoryHash] += 1;
+            uniqueDonorCount[categoryHash]++;
         }
         if (!firstDonation[msg.sender]) {
             firstDonation[msg.sender] = true;
@@ -147,7 +156,8 @@ contract VoteChain is Ownable {
         string memory category,
         address[] memory vendors,
         uint256[] memory amounts,
-        string memory invoices
+        string memory invoices,
+        address token
     ) external {
         require(getNPOStatus(msg.sender), "CreateProposal:: Should be NPO");
         bytes32 proposalId = getProposalId(totalProposals);
@@ -158,6 +168,7 @@ contract VoteChain is Ownable {
         vendorWallets[proposalId] = vendors;
         vendorAmounts[proposalId] = amounts;
         vendorInvoices[proposalId] = invoices;
+        proposalDonatedToken[proposalId] = token;
         proposalCategories[proposalId] = stringToKeccak256(category);
         totalProposals++;
         emit ProposalCreated(
@@ -166,6 +177,7 @@ contract VoteChain is Ownable {
             category,
             vendors,
             amounts,
+            token,
             invoices,
             block.timestamp
         );
@@ -201,5 +213,24 @@ contract VoteChain is Ownable {
         require(isDonor(msg.sender), "VoteToProposal:: Only donors can vote");
         voteCountForProposal[proposalId]++;
         emit Voted(proposalId, msg.sender, block.timestamp);
+    }
+
+    // Finalize the Proposal - anyone can call as long as the votes met the criteria
+    function finaliseProposal(bytes32 proposalId) external {
+        uint256 totalVotes = voteCountForProposal[proposalId];
+        uint256 noOfUniqueDonors = uniqueDonorCount[proposalId];
+        address payToken = proposalDonatedToken[proposalId];
+        require(
+            totalVotes * 100 > noOfUniqueDonors * 51,
+            "FinaliseProposal:: Not enough votes to finalize the proposal"
+        );
+        for (uint256 i = 0; i < vendorWallets[proposalId].length; i++) {
+            TransferHelper.safeTransfer(
+                payToken,
+                vendorWallets[proposalId][i],
+                vendorAmounts[proposalId][i]
+            );
+        }
+        emit Finalised(proposalId, msg.sender, block.timestamp);
     }
 }
