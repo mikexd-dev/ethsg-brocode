@@ -2,9 +2,10 @@
 pragma solidity 0.8.19;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./TransferHelper.sol";
 
-contract VoteChain is Ownable {
+contract VoteChain is Ownable, ReentrancyGuard {
     // Mapping of NPO (Non-Profit Organization) & Status
     mapping(address => bool) public npoList;
 
@@ -19,9 +20,6 @@ contract VoteChain is Ownable {
 
     // Mapping of ProposalId and Categories
     mapping(bytes32 => bytes32) public proposalCategories;
-
-    // Mapping of Proposals
-    mapping(bytes32 => bool) public proposals;
 
     // Mapping of Approved Proposals
     mapping(bytes32 => bool) public approvedProposals;
@@ -126,7 +124,7 @@ contract VoteChain is Ownable {
         string memory category,
         address token,
         uint256 amount
-    ) external {
+    ) external nonReentrant {
         TransferHelper.safeTransferFrom(
             token,
             msg.sender,
@@ -158,7 +156,7 @@ contract VoteChain is Ownable {
         uint256[] memory amounts,
         string memory invoices,
         address token
-    ) external {
+    ) external nonReentrant {
         require(getNPOStatus(msg.sender), "CreateProposal:: Should be NPO");
         bytes32 proposalId = getProposalId(totalProposals);
         require(
@@ -201,7 +199,7 @@ contract VoteChain is Ownable {
     }
 
     // Vote for a Proposal
-    function voteToProposal(bytes32 proposalId) external {
+    function voteToProposal(bytes32 proposalId) external nonReentrant {
         uint256 totalProposedAmount = getProposedAmountByProposalId(proposalId);
         uint256 balanceInCategory = donationAmountByCategory[
             proposalCategories[proposalId]
@@ -216,7 +214,7 @@ contract VoteChain is Ownable {
     }
 
     // Finalize the Proposal - anyone can call as long as the votes met the criteria
-    function finaliseProposal(bytes32 proposalId) external {
+    function finaliseProposal(bytes32 proposalId) external nonReentrant {
         uint256 totalVotes = voteCountForProposal[proposalId];
         uint256 noOfUniqueDonors = uniqueDonorCount[proposalId];
         address payToken = proposalDonatedToken[proposalId];
@@ -231,6 +229,7 @@ contract VoteChain is Ownable {
                 vendorAmounts[proposalId][i]
             );
         }
+        approvedProposals[proposalId] = true;
         emit Finalised(proposalId, msg.sender, block.timestamp);
     }
 }
