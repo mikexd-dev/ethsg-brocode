@@ -34,4 +34,9 @@ contract VoteChainDonorNFT is ERC721A, Ownable {
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
     }
+
+    // prevent user to transfer NFT to someother wallet
+    function transferFrom(address from, address to, uint256 tokenId) public virtual override payable {
+        revert("Transfers are disabled");
+    }
 }
