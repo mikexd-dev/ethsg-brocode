@@ -20,7 +20,9 @@ contract VoteChainDonorNFT is ERC721A, Ownable {
     function mint(address wallet) public {
         require(wallet != address(0), "Mint:: Invalid Address");
         require(allowMint[msg.sender], "Mint:: Unauthorised");
-        _mint(wallet, 1);
+        if (balanceOf(wallet) == 0) {
+            _mint(wallet, 1);
+        }
     }
 
     function burn(uint256 tokenId) external {
@@ -33,10 +35,5 @@ contract VoteChainDonorNFT is ERC721A, Ownable {
 
     function _baseURI() internal view override returns (string memory) {
         return baseURI;
-    }
-
-    // prevent user to transfer NFT to someother wallet
-    function transferFrom(address from, address to, uint256 tokenId) public virtual override payable {
-        revert("Transfers are disabled");
     }
 }
