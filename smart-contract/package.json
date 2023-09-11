@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --exit --recursive"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "@truffle/hdwallet-provider": "^2.1.13",
     "chai": "^4.3.8",
     "dotenv": "^16.3.1",
+    "mocha": "^10.2.0",
     "truffle-plugin-verify": "^0.5.33"
   },
   "devDependencies": {
