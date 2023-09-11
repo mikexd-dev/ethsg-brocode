@@ -77,44 +77,69 @@ const Homepage = () => {
   });
 
   useEffect(() => {
-    const fetchDetails = async (proposalUrl: string) => {
-      if (proposalUrl) {
-        const proposalApiUrl = `api/proposal`;
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ proposalUrl }),
-        };
-        const response = await fetch(proposalApiUrl, requestOptions);
-
-        const data = await response.json();
-        return data;
-      }
-    };
-
-    const fetchProposalDetails = async () => {
+    const fetchProposals = async () => {
       if (openProposals.length > 0) {
-        const data: any = [];
-        openProposals.map(async (proposal: any) => {
-          if (provider) {
-            const contract = new ethers.Contract(
-              voteChainContractAddress,
-              voteChainContractAbi,
-              provider
-            );
-            const proposalUrl = await contract.getProposalData(proposal);
-            const proposalDataJson = await fetchDetails(proposalUrl);
-            proposalDataJson.proposalId = proposal;
-            data.push(proposalDataJson);
-          }
-        });
-        console.log(data)
-        setProposalData(data);
+        console.log(openProposals);
+        await fetchProposalDetails();
       }
     };
 
-    fetchProposalDetails();
+    fetchProposals();
   }, [openProposals, provider]);
+
+  const fetchProposalData = async (proposal: any) => {
+    if (provider) {
+      const contract = new ethers.Contract(
+        voteChainContractAddress,
+        voteChainContractAbi,
+        provider
+      );
+      const proposalUrl = await contract.getProposalData(proposal);
+      const proposalDataJson = await fetchDetails(proposalUrl);
+      console.log(proposalDataJson, "here");
+      proposalDataJson.proposalId = proposal;
+      return proposalDataJson;
+    }
+  };
+
+  const fetchProposalDetails = async () => {
+    const data: any = [];
+
+    const promises = openProposals.map(fetchProposalData);
+    const results = await Promise.all(promises);
+    console.log(results);
+    results.forEach((result) => data.push(result));
+
+    // openProposals.map(async (proposal: any) => {
+    //   if (provider) {
+    //     const contract = new ethers.Contract(
+    //       voteChainContractAddress,
+    //       voteChainContractAbi,
+    //       provider
+    //     );
+    //     const proposalUrl = await contract.getProposalData(proposal);
+    //     const proposalDataJson = await fetchDetails(proposalUrl);
+    //     proposalDataJson.proposalId = proposal;
+    //     data.push(proposalDataJson);
+    //   }
+    // });
+    setProposalData(data);
+  };
+
+  const fetchDetails = async (proposalUrl: string) => {
+    if (proposalUrl) {
+      const proposalApiUrl = `api/proposal`;
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ proposalUrl }),
+      };
+      const response = await fetch(proposalApiUrl, requestOptions);
+
+      const data = await response.json();
+      return data;
+    }
+  };
 
   // end of fetching proposal
 
