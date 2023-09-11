@@ -279,6 +279,13 @@ contract VoteChain is Ownable, ReentrancyGuard {
         return openProposals;
     }
 
+    // Get ProposalData
+    function getProposalData(
+        bytes32 proposalId
+    ) public view returns (string memory) {
+        return proposalData[proposalId];
+    }
+
     // Get the List of All Proposals Created by an NPO
     function getListOfAllProposalsByNPO(
         address npo
