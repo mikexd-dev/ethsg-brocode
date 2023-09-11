@@ -265,6 +265,15 @@
     "type": "function"
   },
   {
+    "inputs": [{ "internalType": "address", "name": "npo", "type": "address" }],
+    "name": "getListOfAllProposalsByNPO",
+    "outputs": [
+      { "internalType": "bytes32[]", "name": "", "type": "bytes32[]" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "getListOfOpenProposals",
     "outputs": [
@@ -303,6 +312,15 @@
     "inputs": [
       { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
     ],
+    "name": "getProposalData",
+    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+    ],
     "name": "getProposalDonatedToken",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
@@ -325,6 +343,15 @@
     ],
     "name": "getProposedAmountByProposalId",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+    ],
+    "name": "getProposerOfProposalId",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },
