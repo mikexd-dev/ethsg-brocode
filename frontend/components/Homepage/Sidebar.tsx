@@ -13,6 +13,10 @@ const Sidebar = ({ openProposals }: any) => {
     setShowPopup(true);
   };
 
+  if (openProposals == null) {
+    openProposals = []
+  }
+
   return (
     <>
       <div className="bg-[#1F2937] p-4 rounded-lg">
