@@ -33,9 +33,10 @@ const Funds = () => {
 
             <div className="flex gap-4 w-full">
                 {
-                    FundsArray.map((fund) => {
+                    FundsArray.map((fund, index) => {
+                        console.log(fund, index)
                         return <>
-                            <div className="bg-white rounded-lg p-4 w-1/4">
+                            <div key={`Funds-${index}-${fund.id}`} className="bg-white rounded-lg p-4 w-1/4">
                                 <p className="flex items-center font-semibold"><img className="w-[60px] h-[60px] object-cover rounded-sm mr-2" src={fund.image}></img> 
                                 {fund.name}</p>
 
