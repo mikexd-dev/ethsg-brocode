@@ -1,43 +1,65 @@
-# Polygon Deployed Contract
+# VoteChain - A Decentralized Voting and Donation Platform
 
-### VoteChain
+## Overview
+VoteChain is a blockchain-enabled, vote-weighted donation platform that aims to increase transparency, reduce donor fatigue, and improve tracking in the donation system. By harnessing the power of blockchain, VoteChain establishes a decentralized and secure platform where donors can contribute funds and participate in voting for the allocation of resources to different causes and projects.
+
+## Features
+ - NPO Registration: Allows the registration of Non-Profit Organizations along with storing associated data.
+ - Donation Management: Donors can donate to different categories using supported tokens. 
+ - Donation details including the category and amount are recorded on the blockchain.
+ - Proposal Creation: Registered NPOs can create proposals specifying the vendors, amount, and other necessary details.
+ - Community Voting: Allows community members to vote on proposals, ensuring a decentralized decision-making process.
+ - Proposal Finalization: Proposals that meet the required criteria can be finalized, enabling the transfer of funds to vendors.
+ - NFT Minting: Supports the minting of different types of NFTs - for donors, voters, and NPOs.
+ - Data Retrieval: Various functions to retrieve data like proposal details, vendor details, donation amounts by category, etc.
+
+## Deployed Smartcontracts:
+Polygon Mumbai
 ```
 https://mumbai.polygonscan.com/address/0xbdB220a0B2823E00e27C695346dF1FC2521320Fd
 ```
 
-### VoteChainDonorNFT
-```
-https://mumbai.polygonscan.com/address/0xc9e4ea0059c7fbb04927a4162648267e16b35380
-```
-
-### VoteChainVoterNFT
-```
-https://mumbai.polygonscan.com/address/0xdc6a30dba4bad2cc0c8e20fb3404ef6195ebad22
-```
-
-### VoteChainNPONFT
-```
-https://mumbai.polygonscan.com/address/0x6C29dCE3E4BB2b1BdAeb75BB48D145aA006989b4
-```
-
-# Polygon zkEVM Deployed Contract
-
-### VoteChain
+Polygon zkEVM Testnet
 ```
 https://testnet-zkevm.polygonscan.com/address/0xc69e6E059a551d146175ED103Fd01266a647f777
 ```
 
-### VoteChainDonorNFT
+## Smart Contracts
+ - VoteChain.sol - The main contract implementing the core logic of the platform.
+ - IVoteChainNFT.sol - Interface defining the structure for NFT contracts to interact with the VoteChain contract.
+ - TransferHelper.sol - A helper contract to facilitate secure transfers of tokens.
+
+## Dependencies / Tech
+OpenZeppelin Contracts, Solidity, Truffle, ethersjs, mocha, chai
+
+
+## Setup and Installation
+ - Clone the repository to your local machine.
+ - Install necessary packages using `npm install`.
+ - Compile the contracts using `truffle compile`.
+ - Deploy the contracts using `truffle migrate`.
+
+## Events
+ - NPOUpdated: Triggered when an NPO's status is updated.
+ - DonorUpdated: Triggered when a donor's status is updated.
+ - Donated: Triggered when a donation is made.
+ - ProposalCreated: Triggered when a new proposal is created.
+ - Voted: Triggered when a vote is cast on a proposal.
+ - Finalised: Triggered when a proposal is finalized.
+
+## Functions
+Below are some of the core functions:
+
+ - donate: For donating to a category.
+ - createProposal: For creating a proposal.
+ - voteToProposal: For voting on a proposal.
+ - finaliseProposal: For finalizing a proposal.
+
+## Testing
+To run the tests, use the following command:
 ```
-https://testnet-zkevm.polygonscan.com/address/0xDC6A30DBA4Bad2CC0c8e20fb3404Ef6195eBaD22
+npm run test
 ```
 
-### VoteChainVoterNFT
-```
-https://testnet-zkevm.polygonscan.com/address/0x72C255E3e271875A09Cbccf7A8Ad0027F840479D
-```
-
-### VoteChainNPONFT
-```
-https://testnet-zkevm.polygonscan.com/address/0x930EB0D989704965A9eb7Df174e2e70b37C3cA8f
-```
+## License
+This project is licensed under the MIT License.
