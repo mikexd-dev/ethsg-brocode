@@ -10,7 +10,6 @@ const Sidebar = ({
   voteChainContractAbi,
   voteChainContractAddress,
 }: any) => {
-  console.log(openProposals);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
 

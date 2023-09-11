@@ -20,8 +20,6 @@ import { useAccount, useContractRead } from "wagmi";
 const ProposalPopup = (props: any) => {
   const proposal = props.proposal;
   const { voteChainContractAbi, voteChainContractAddress } = props;
-  console.log(proposal, "proposal");
-
   const [provider, setProvider] = useState<any>(null);
   const { address, isConnecting, isDisconnected } = useAccount();
   const [isVoted, setIsVoted] = useState<any>(false);
@@ -35,7 +33,6 @@ const ProposalPopup = (props: any) => {
 
   const vote = async () => {
     toast.loading("Waiting for txn...");
-    console.log(proposal, "proposal");
 
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -47,7 +44,7 @@ const ProposalPopup = (props: any) => {
     const tx = await contract.voteToProposal(proposal.proposalId);
     await tx.wait();
     setIsVoted(true);
-    console.log(tx, "tx");
+
     toast.remove();
   };
 
@@ -57,20 +54,6 @@ const ProposalPopup = (props: any) => {
     functionName: "getVendorAmountsForPorposal",
     args: [proposal.proposalId],
   });
-
-  // console.log(ethers.utils.formatEther(data[0]), "aount");
-
-  // const isAlreadyApproved = async () => {
-  //   const signer = provider.getSigner();
-  //   const contract = new ethers.Contract(
-  //     voteChainContractAddress,
-  //     voteChainContractAbi,
-  //     signer
-  //   );
-  //   const tx = await contract.trackUniqueDonor(proposal.category, address);
-  //   await tx.wait();
-  //   return tx;
-  // };
 
   if (proposal.title == "") return <></>;
 

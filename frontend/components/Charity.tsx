@@ -15,15 +15,12 @@ import { useContractRead } from "wagmi";
 const CharityPopup = (props: any) => {
   const charity = props.charity;
   const { voteChainContractAbi, voteChainContractAddress } = props;
-  console.log(charity, "npoId");
   const { data, isSuccess, isLoading }: any = useContractRead({
     address: voteChainContractAddress,
     abi: voteChainContractAbi,
     functionName: "getListOfAllProposalsByNPO",
     args: [charity.npoId],
   });
-
-  console.log(data, "single npo data");
 
   if (charity.title == "") return <></>;
 

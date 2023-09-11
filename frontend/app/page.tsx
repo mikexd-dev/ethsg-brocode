@@ -10,7 +10,7 @@ import Router from "next/router";
 
 import { useAccount } from "@particle-network/connect-react-ui";
 import ProposalComponent from "@/components/Proposal";
-import Homepage from "./homepage/page";
+import Dashboard from "./dashboard/page";
 export default function Home() {
   const { data, isSignedIn, signOut, signIn } = useSIWE();
   const account = useAccount();
@@ -24,7 +24,5 @@ export default function Home() {
 
   if (!isMounted) return null;
 
-  return (
-    <Homepage/>
-  );
+  return <Dashboard />;
 }

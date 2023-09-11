@@ -85,7 +85,7 @@ const Funds = ({
       specialNeeds && ethers.utils.formatEther(specialNeeds);
     tempFunds[2].amount = family && ethers.utils.formatEther(family);
     tempFunds[3].amount = education && ethers.utils.formatEther(education);
-    console.log(tempFunds, "tempFunds");
+
     setFunds([...tempFunds]);
   }, [animals, specialNeeds, family, education]);
 
@@ -96,7 +96,7 @@ const Funds = ({
       provider.getSigner()
     );
     const allowance = await erc20.allowance(address, voteChainContractAddress);
-    console.log("allowance:", allowance.toString(), amount);
+
     if (allowance.lt(amount)) {
       const approveTx = await erc20.approve(voteChainContractAddress, amount);
       try {
@@ -110,15 +110,14 @@ const Funds = ({
 
   const donate = async (fund: any) => {
     toast.loading("Waiting for txn...");
-    console.log(fund, "fund");
+
     const amountToDonate = ethers.utils
       .parseUnits(donationAmount?.target?.value, 18)
       .toString();
-    console.log(amountToDonate, "amountToDonate");
+
     const valueApproved = await isAlreadyApproved();
-    console.log(parseFloat(amountToDonate), parseFloat(valueApproved));
+
     if (parseFloat(amountToDonate) > parseFloat(valueApproved)) {
-      console.log("approve");
       await checkAndSetAllowance(amountToDonate);
     }
 
@@ -151,7 +150,7 @@ const Funds = ({
       accounts[0],
       daiPayTokenAddress
     );
-    console.log("allowedSpend:", allowedSpend.toString());
+
     return allowedSpend;
   };
 

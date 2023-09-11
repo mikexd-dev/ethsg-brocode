@@ -11,8 +11,6 @@ const Charities = ({
   voteChainContractAddress,
   voteChainContractAbi,
 }: any) => {
-  console.log(npo, "npo");
-
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCharity, setSelectedCharity] = useState({});
 
