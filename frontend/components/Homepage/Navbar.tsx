@@ -1,3 +1,5 @@
+import { ConnectKitButton } from "connectkit";
+
 const Navbar = () => {
 
     return <>
@@ -12,10 +14,10 @@ const Navbar = () => {
             </div>
             <div className="flex w-1/3 justify-center gap-2">
                 <a className="px-4 py-2 bg-white font-semibold rounded-lg text-sm cursor-pointer">Overview</a>
-                <a className="px-4 py-2 text-sm cursor-pointer">Proposals <span className="rounded-full text-xs text-[#444] bg-[#ddd] p-1 px-2">4</span></a>
+                {/* <a className="px-4 py-2 text-sm cursor-pointer">Proposals <span className="rounded-full text-xs text-[#444] bg-[#ddd] p-1 px-2">4</span></a> */}
             </div>
             <div className="flex w-1/3 justify-end">
-                <p>Mike</p>
+                <ConnectKitButton />
             </div>
         </nav>
     </>
