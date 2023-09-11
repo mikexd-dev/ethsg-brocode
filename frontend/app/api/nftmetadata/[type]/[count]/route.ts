@@ -25,5 +25,5 @@ export async function GET(
   //     }
   // }
 
-  return NextResponse.json(responseJson);
+  return NextResponse.json({});
 }
