@@ -1,3 +1,5 @@
+import ProposalComponent from "@/components/Proposal";
+
 const Charities = () => {
 
     const CharitiesArray = [

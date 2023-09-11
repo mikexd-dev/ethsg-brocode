@@ -1,7 +1,37 @@
+import {
+    Dialog,
+} from "@/components/ui/dialog"
+import { DialogContent } from "@radix-ui/react-dialog";
+import ProposalPopup from "../Proposal";
+
 const Sidebar = () => {
 
-    return <>
+    const showPopup = true
 
+    const PROPOSAL = {
+        title: "Furniture for 40 families in need",
+        npo: "Habitat for Humanity",
+        description:
+            "Asking for funds to get required furniture for 40 families in need",
+        rationale:
+            "These families have been living in poor conditions for a long period of time. These funds will go a long way to improve their living conditions",
+        impact: {
+            subject: "Families",
+            quantity: 100,
+        },
+        category: "Family",
+        vendor: {
+            name: "Vendor Name",
+            description:
+                "Furni-sure is an establised furniture store that has been around for more than 10 years. They obtain good condition 2nd had furniture and sell them at affordable prices",
+            docs: "2 attached docs",
+            amount: "$4200",
+        },
+        timeLeft: "2 days left",
+        ask: "$4200",
+    };
+
+    return <>
         <div className="bg-[#1F2937] p-4 rounded-lg">
             <h3 className="font-semibold text-white mb-2">How it works</h3>
             <p className="text-white">Checkout this short 3 minutes video to get started and make an impact.</p>
@@ -20,8 +50,11 @@ const Sidebar = () => {
                     <p className="text-xs text-gray-400">3 days left</p>
                 </div>
             </div>
-
         </div>
+
+        {
+            showPopup ? <ProposalPopup proposal={PROPOSAL} /> : <></>
+        }
     </>
 
 }
