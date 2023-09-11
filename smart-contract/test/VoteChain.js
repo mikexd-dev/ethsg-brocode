@@ -1,40 +1,24 @@
 const { accounts, contract } = require('@openzeppelin/test-environment');
 const { expect } = require('chai');
-const { expectRevert, expectEvent, time } = require('@openzeppelin/test-helpers');
 const ether = require('@openzeppelin/test-helpers/src/ether');
 
 const VoteChain = contract.fromArtifact('VoteChain');
 const VoteChainDonorNFT = contract.fromArtifact('VoteChainDonorNFT');
 const VoteChainVoterNFT = contract.fromArtifact('VoteChainVoterNFT');
+const VoteChainNPONFT = contract.fromArtifact('VoteChainNPONFT');
 const TestERC20 = contract.fromArtifact("TestERC20");
-
-const { web3 } = require('@openzeppelin/test-helpers/src/setup');
-
-async function increaseTime(seconds) {
-    await web3.currentProvider.send({
-        jsonrpc: '2.0',
-        method: 'evm_increaseTime',
-        params: [seconds],
-        id: new Date().getTime()
-    });
-}
-
-async function mineBlock() {
-    await web3.currentProvider.send({
-        jsonrpc: '2.0',
-        method: 'evm_mine',
-        id: new Date().getTime()
-    });
-}
 
 describe('VoteChain', async function () {
     this.timeout(60000); // set the timeout to 10 seconds
 
-    const [owner, npo1, npo2, maker, donor1, donor2, donor3, donor4, donor5] = accounts;
+    const [owner, npo1, npo2, donor1, donor2, donor3, vendor1, vendor2, vendor3] = accounts;
     const ZERO_ADDRESS = '0x0';
     let token1, token2, token3, token4, token5;
     const category1 = "animal";
     const category2 = "children";
+    const invoice = "https://pin.ski/489u5EA"
+    const proposalData = "https://api.jsonserve.com/NEAUsw"
+    const npoData = "https://api.jsonserve.com/kVRJGk"
 
     let halfETH = ether('0.5');
     let oneETH = ether('1');
@@ -59,27 +43,29 @@ describe('VoteChain', async function () {
         this.VoteChainDonorNFT = await VoteChainDonorNFT.new({ from: owner });
         expect(this.VoteChainDonorNFT.address).to.not.equal(null);
 
-        await this.VoteChain.updateDonorNFT(this.VoteChainDonorNFT.address, { from: owner });
-        await this.VoteChainDonorNFT.updateAllowedList(this.VoteChain.address, true, { from: owner })
-
         this.VoteChainVoterNFT = await VoteChainVoterNFT.new({ from: owner });
         expect(this.VoteChainVoterNFT.address).to.not.equal(null);
 
-        await this.VoteChain.updateDonorNFT(this.VoteChainVoterNFT.address, { from: owner });
-        await this.VoteChainVoterNFT.updateAllowedList(this.VoteChain.address, true, { from: owner })
+        this.VoteChainNPONFT = await VoteChainNPONFT.new({ from: owner });
+        expect(this.VoteChainNPONFT.address).to.not.equal(null);
 
-        await this.VoteChainDonorNFT.allowMint(this.VoteChain.address, { from: owner });
-        await this.VoteChainVoterNFT.allowMint(this.VoteChain.address, { from: owner });
+        await this.VoteChain.updateDonorNFT(this.VoteChainDonorNFT.address, { from: owner });
+        await this.VoteChain.updateVoterNFT(this.VoteChainVoterNFT.address, { from: owner });
+        await this.VoteChain.updateNPONFT(this.VoteChainNPONFT.address, { from: owner });
+
+        await this.VoteChainDonorNFT.updateAllowedList(this.VoteChain.address, true, { from: owner })
+        await this.VoteChainVoterNFT.updateAllowedList(this.VoteChain.address, true, { from: owner })
+        await this.VoteChainNPONFT.updateAllowedList(this.VoteChain.address, true, { from: owner })
     });
 
     describe('NPO', async function () {
         it('should update NPO Status to true', async function () {
-            await this.VoteChain.updateNPO(npo1, true, { from: owner });
+            await this.VoteChain.updateNPO(npo1, true, npoData, { from: owner });
             expect(await this.VoteChain.getNPOStatus(npo1)).to.equal(true);
         });
 
         it('should update NPO Status to false', async function () {
-            await this.VoteChain.updateNPO(npo1, false, { from: owner });
+            await this.VoteChain.updateNPO(npo1, false, npoData, { from: owner });
             expect(await this.VoteChain.getNPOStatus(npo1)).to.equal(false);
         });
     });
@@ -93,4 +79,42 @@ describe('VoteChain', async function () {
         });
     });
 
+    describe('End to End', async function () {
+
+        it('End to End Test', async function () {
+
+            // Create NPO
+            await this.VoteChain.updateNPO(npo1, true, npoData, { from: owner });
+            expect(await this.VoteChain.getNPOStatus(npo1)).to.equal(true);
+
+            // Donate
+            await token1.approve(this.VoteChain.address, hundredETH, { from: donor1 });
+            await this.VoteChain.donate(category1, token1.address, hundredETH, { from: donor1 });
+
+            await token1.mint(donor2, thousandETH, { from: donor2 });
+            await token1.approve(this.VoteChain.address, hundredETH, { from: donor2 });
+            await this.VoteChain.donate(category1, token1.address, hundredETH, { from: donor2 });
+
+            await token1.mint(donor3, thousandETH, { from: donor3 });
+            await token1.approve(this.VoteChain.address, hundredETH, { from: donor3 });
+            await this.VoteChain.donate(category1, token1.address, hundredETH, { from: donor3 });
+
+            // Create Proposal
+            const createProposalTx = await this.VoteChain.createProposal(category1, [vendor1, vendor2, vendor3], [tenETH.toString(), tenETH.toString(), tenETH.toString()], invoice, token1.address, proposalData, { from: npo1 });
+            const proposalId = createProposalTx.logs[0].args.proposalId;
+
+            // Vote Proposal - Donor 1
+            await this.VoteChain.voteToProposal(proposalId, { from: donor1 });
+
+            // Vote Proposal - Donor 2
+            await this.VoteChain.voteToProposal(proposalId, { from: donor2 });
+
+            // Finalise Proposal
+            await this.VoteChain.finaliseProposal(proposalId, { from: npo1 });
+
+            // Check if Approved or Not
+            await this.VoteChain.isProposalApproved(proposalId);
+            expect(await this.VoteChain.isProposalApproved(proposalId)).to.equal(true);
+        });
+    });
 });
