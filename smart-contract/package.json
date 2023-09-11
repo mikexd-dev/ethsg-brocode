@@ -19,8 +19,10 @@
     "@truffle/hdwallet-provider": "^2.1.13",
     "chai": "^4.3.8",
     "dotenv": "^16.3.1",
+    "ethers": "^6.7.1",
     "mocha": "^10.2.0",
-    "truffle-plugin-verify": "^0.5.33"
+    "truffle-plugin-verify": "^0.5.33",
+    "web3": "^4.1.1"
   },
   "devDependencies": {
     "erc721a": "^4.2.3"
