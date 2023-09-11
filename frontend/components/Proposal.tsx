@@ -53,7 +53,7 @@ const ProposalPopup = () => {
       <DialogTrigger asChild>
         <Button variant="outline">Proposal</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[500px] bg-slate-50">
+      <DialogContent className="sm:max-w-[800px] bg-slate-50">
         <DialogHeader className="flex flex-row gap-5">
           <div className="flex flex-col flex-[1.5]">
             <DialogTitle>{title}</DialogTitle>

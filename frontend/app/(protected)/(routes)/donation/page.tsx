@@ -1,13 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createPublicClient, getContract, http } from "viem";
 import { polygonMumbai } from "viem/chains";
-import vote_chain from "@/blockchain/vote_chain.json";
+
 import { Contract } from "ethers";
 import { ethers } from "ethers";
 import { Button } from "@/components/ui/button";
-import { useContractEvent, useContractRead } from "wagmi";
+import { useContractEvent, useContractRead, useAccount } from "wagmi";
+
+import vote_chain from "@/blockchain/vote_chain.json";
+import dai_token from "@/blockchain/dai_token.json";
 
 // const transport = http(
 //   "https://polygon-mumbai.g.alchemy.com/v2/sO5uKxdgFoY18d1Iee8a8uCNVZTG3zpV"
@@ -17,10 +20,14 @@ import { useContractEvent, useContractRead } from "wagmi";
 //   transport,
 // });
 
-const contractAbi = vote_chain;
-const contractAddress = "0x900b6a588ea66f4d9dc108048fff6ad75068296a";
-// const contractAddress = "0x6E8457C0C4B2D7eaa2aB1fd6a7379f1251fBD8aC";
+const voteChainContractAbi = vote_chain;
+const voteChainContractAddress = "0xbdB220a0B2823E00e27C695346dF1FC2521320Fd";
+
+const daiTokenContractAbi = dai_token;
+const daiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
+
 const DonationPage = () => {
+  const { address, isConnecting, isDisconnected } = useAccount();
   const eventNames = [
     "NPOUpdated",
     "DonorUpdated",
@@ -31,62 +38,139 @@ const DonationPage = () => {
   ];
 
   useContractEvent({
-    address: contractAddress,
-    abi: contractAbi,
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
     eventName: "Donated",
     listener: (event) => {
       console.log("Event data:", event);
     },
   });
 
-  const { data, isSuccess, isLoading, refetch } = useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "npoList",
-    // args: ["0x900b6a588ea66f4d9dc108048fff6ad75068296a"],
-    // watch: true,
+  const {
+    data: openProposals,
+    isSuccess: isListOpenProposalSuccess,
+    isLoading: isLoadingProposalSuccess,
+  } = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getListOfOpenProposals",
   });
-  //   const provider = new ethers.providers.Web3Provider(window.ethereum);
-  //   const contract = new ethers.Contract(contractAddress, ["npoList"], provider);
 
-  //   console.log(data);
+  const {
+    data: npoInfo,
+    isSuccess: isNPOInfoSuccess,
+    isLoading: isLoadingNPOInfoSuccess,
+    refetch,
+  } = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getNPOInfo",
+  });
+
+  const [provider, setProvider] = useState<any>(null);
+  const [isApproved, setIsApproved] = useState<any>(false);
+  const [isDonated, setIsDonated] = useState<any>(false);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+    }
+  }, []);
+
+  console.log(openProposals, "getListOfOpenProposals");
+  console.log(npoInfo, "getNPOInfo");
 
   const donate = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const amountToDonate = ethers.utils.parseUnits("0.1", 18).toString();
+    console.log(amountToDonate, "amountToDonate");
+    const valueApproved = await isAlreadyApproved();
+    console.log(parseFloat(amountToDonate), parseFloat(valueApproved));
+    if (parseFloat(amountToDonate) > parseFloat(valueApproved)) {
+      console.log("approve");
+      await checkAndSetAllowance(amountToDonate);
+    }
+
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, contractAbi, signer);
+    const contract = new ethers.Contract(
+      voteChainContractAddress,
+      voteChainContractAbi,
+      signer
+    );
     const tx = await contract.donate(
-      "animal",
-      "0x834abB2d7A935979f704D019fc089DBcE1b914D7",
+      "Animals",
+      daiPayTokenAddress,
       ethers.utils.parseUnits("0.1", 18)
     );
     await tx.wait();
   };
 
-  async function getPublicVariables() {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const approve = async () => {
+    console.log("1");
     const signer = provider.getSigner();
-    const contract = new ethers.Contract(contractAddress, contractAbi, signer);
-
-    // const npoList = await contract.npoList();
-    // console.log("npoList:", npoList);
-
-    const donorList = await contract.donorList(
-      "0x87eA8ddFdfB00E07ED8872173e975530D135C9FC"
+    console.log("2");
+    const contract = new ethers.Contract(
+      daiPayTokenAddress,
+      daiTokenContractAbi,
+      signer
     );
-    console.log("donorList:", donorList);
+    console.log("3");
+    const maxUint = ethers.constants.MaxUint256;
+    console.log("4");
+    const tx = await contract.allowance(daiTokenContractAbi, maxUint);
+    await tx.wait();
+  };
 
-    const donationAmountByCategory = await contract.donationAmountByCategory();
-    console.log("donationAmountByCategory:", donationAmountByCategory);
+  const checkAndSetAllowance = async (amount: any) => {
+    // Transactions with the native token don't need approval
+    // if (tokenAddress === ethers.constants.AddressZero) {
+    //   return;
+    // }
 
-    const totalProposals = await contract.totalProposals();
-    console.log("Total Proposals:", totalProposals);
-  }
+    const erc20 = new Contract(
+      daiPayTokenAddress,
+      daiTokenContractAbi,
+      provider.getSigner()
+    );
+    const allowance = await erc20.allowance(address, voteChainContractAddress);
+    console.log("allowance:", allowance.toString(), amount);
+    if (allowance.lt(amount)) {
+      const approveTx = await erc20.approve(voteChainContractAddress, amount);
+      try {
+        await approveTx.wait();
+        console.log(`Transaction mined succesfully: ${approveTx.hash}`);
+      } catch (error) {
+        console.log(`Transaction failed with error: ${error}`);
+      }
+    }
+  };
+
+  const isAlreadyApproved = async () => {
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      daiPayTokenAddress,
+      daiTokenContractAbi,
+      signer
+    );
+    const accounts = await window.ethereum.request({
+      method: "eth_requestAccounts",
+    });
+    const allowedSpend = await contract.allowance(
+      accounts[0],
+      daiPayTokenAddress
+    );
+    console.log("allowedSpend:", allowedSpend.toString());
+    return allowedSpend;
+  };
+
+  useEffect(() => {
+    isAlreadyApproved();
+  }, []);
 
   return (
-    <div>
-      <Button onClick={() => donate()}>Donate</Button>
-      <Button onClick={() => getPublicVariables()}>Get Public Variables</Button>
+    <div className="flex flex-col gap-2">
+      {!isApproved && <Button onClick={() => setLimit()}>Approve Limit</Button>}
+      {!isDonated && <Button onClick={() => donate()}>Donate</Button>}
     </div>
   );
 };
