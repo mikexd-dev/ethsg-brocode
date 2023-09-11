@@ -6,7 +6,7 @@ import "./styles.css";
 import Funds from "@/components/Homepage/Funds";
 import Charities from "@/components/Homepage/Charities";
 import ProposalComponent from "@/components/Proposal";
-
+import toast, { Toaster } from "react-hot-toast";
 import { useContractEvent, useContractRead, useAccount } from "wagmi";
 
 import vote_chain from "@/blockchain/vote_chain.json";
@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 import { useCustomContractRead } from "@/lib/hooks";
+import { useToast } from "@/components/ui/use-toast";
 
 const voteChainContractAbi = vote_chain;
 const voteChainContractAddress = "0xbdB220a0B2823E00e27C695346dF1FC2521320Fd";
@@ -38,14 +39,39 @@ const Homepage = () => {
     address: voteChainContractAddress,
     abi: voteChainContractAbi,
     eventName: "Donated",
-    listener: (event) => {
+    listener: async (event) => {
+      toast.loading("Updating funds...");
       console.log("Event data:", event);
+      const contract = new ethers.Contract(
+        voteChainContractAddress,
+        voteChainContractAbi,
+        provider
+      );
+      const animalAmount = await contract.getDonationAmountByCategory(
+        "Animals"
+      );
+      const specialAmount = await contract.getDonationAmountByCategory(
+        "Special Needs"
+      );
+      const familyAmount = await contract.getDonationAmountByCategory("Family");
+      const educationAmount = await contract.getDonationAmountByCategory(
+        "Education"
+      );
+      setFunds({
+        animals: animalAmount,
+        specialNeeds: specialAmount,
+        family: familyAmount,
+        education: educationAmount,
+      });
+      toast.remove();
+      toast.success("Donation Successful!");
     },
   });
 
   const [provider, setProvider] = useState<any>(null);
   const [proposalData, setProposalData] = useState<any>(null);
   const [npoData, setNpoData] = useState<any>(null);
+  const [funds, setFunds] = useState<any>(null);
 
   // functions
   const { data: animalAmount }: any = useContractRead({
@@ -75,6 +101,16 @@ const Homepage = () => {
     functionName: "getDonationAmountByCategory",
     args: ["Education"],
   });
+
+  useEffect(() => {
+    console.log(animalAmount, "animalAmount");
+    setFunds({
+      animals: animalAmount,
+      specialNeeds: specialNeedsAmount,
+      family: familyAmount,
+      education: educationAmount,
+    });
+  }, [animalAmount, specialNeedsAmount, familyAmount, educationAmount]);
 
   console.log(animalAmount, "animalAmount");
 
@@ -185,6 +221,9 @@ const Homepage = () => {
 
   return (
     <div className="bg-[#F5F4F3] h-screen px-12">
+      <div>
+        <Toaster />
+      </div>
       <div className="flex">
         <Navbar />
       </div>
@@ -194,10 +233,12 @@ const Homepage = () => {
         </div>
         <div className="flex w-3/4 flex-col">
           <Funds
-            animals={animalAmount}
-            specialNeeds={specialNeedsAmount}
-            eduction={educationAmount}
-            family={familyAmount}
+            animals={funds && funds.animals}
+            specialNeeds={funds && funds.specialNeeds}
+            eduction={funds && funds.education}
+            family={funds && funds.family}
+            voteChainContractAbi={voteChainContractAbi}
+            voteChainContractAddress={voteChainContractAddress}
           />
           <Charities
             npo={npoData}

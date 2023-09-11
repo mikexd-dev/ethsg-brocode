@@ -20,7 +20,7 @@ const CharityPopup = (props: any) => {
     address: voteChainContractAddress,
     abi: voteChainContractAbi,
     functionName: "getListOfAllProposalsByNPO",
-    args: ["0x6C66884502B9542298c4547c25bc415F26D3c2f4"],
+    args: [charity.npoId],
   });
 
   console.log(data, "single npo data");
@@ -57,7 +57,7 @@ const CharityPopup = (props: any) => {
                 </p>
                 <p className="text-md text-gray-700 my-2">{charity.url}</p>
                 <p className="text-md text-gray-700 font-semibold">
-                  S$8.3K raised | {data.length} open proposals
+                  S$8.3K raised | {data?.length} open proposals
                 </p>
               </div>
             </div>

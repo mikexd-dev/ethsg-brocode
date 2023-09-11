@@ -52,7 +52,21 @@ const Charities = ({
                         : ""
                     }
                   ></img>
-                  <span className="tag tagBlue">{charity.category}</span>
+                  <span
+                    className={`tag ${
+                      charity.category === "Animals"
+                        ? "tagBlue"
+                        : charity.category === "Special Needs"
+                        ? "tagOrange"
+                        : charity.category === "Education"
+                        ? "tagGreen"
+                        : charity.category === "Families"
+                        ? "tagYellow"
+                        : ""
+                    }`}
+                  >
+                    {charity.category}
+                  </span>
                 </p>
                 <p className="text-slate-800 mt-2 font-semibold">
                   {charity.npo}

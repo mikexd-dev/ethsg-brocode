@@ -14,7 +14,7 @@ const Sidebar = ({ openProposals }: any) => {
   };
 
   if (openProposals == null) {
-    openProposals = []
+    openProposals = [];
   }
 
   return (
@@ -48,14 +48,26 @@ const Sidebar = ({ openProposals }: any) => {
                     onClick={() => showProposal(index)}
                   >
                     <p className="font-semibold">{proposal.title}</p>
-                    <span className="tag tagBlue">
+                    <span
+                      className={`tag ${
+                        proposal.impact.subject === "Animals"
+                          ? "tagBlue"
+                          : proposal.impact.subject === "Special Needs"
+                          ? "tagRed"
+                          : proposal.impact.subject === "Education"
+                          ? "tagGreen"
+                          : proposal.impact.subject === "Families"
+                          ? "tagYellow"
+                          : ""
+                      }`}
+                    >
                       {proposal.impact.subject}
                     </span>
                     <p className="mt-4 mb-4 flex items-center text-sm">
                       <img
                         src="https://www.mintface.xyz/content/images/2021/08/QmTndiF423kjdXsNzsip1QQkBQqDuzDhJnGuJAXtv4XXiZ-1.png"
                         className="w-[40px] rounded-full mr-2"
-                      ></img>{" "}
+                      ></img>
                       Habitat for Humanity
                     </p>
                     <div className="flex justify-between w-full items-center">
