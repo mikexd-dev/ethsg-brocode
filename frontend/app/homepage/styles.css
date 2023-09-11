@@ -1,0 +1,22 @@
+.tag{
+    border-radius: 99px;
+    font-size: 14px;
+    padding: 5px 15px;
+    margin: 5px;
+    margin-left: 0;
+    display: inline-block;
+    height: 30px;
+    font-weight: normal;
+}
+.tagBlue{
+    background-color: #E0F2FE;
+    color: #0284C7; 
+}
+.tagGreen{
+    background-color: #DCFCE7;
+    color: #16A34A; 
+}
+.tagYellow{
+    background-color: #FEF3C7;
+    color: #D97706; 
+}
