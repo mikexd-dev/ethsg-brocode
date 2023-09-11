@@ -9,14 +9,14 @@ module.exports = async function (deployer) {
     const voteChainInstance = await VoteChain.deployed();
 
     // Step 2: Deploy VoteChainDonorNFT and update VoteChain with its address
-    await deployer.deploy(VoteChainDonorNFT);
-    const voteChainDonorNFTInstance = await VoteChainDonorNFT.deployed();
-    await voteChainInstance.updateDonorNFT(voteChainDonorNFTInstance.address);
+    // await deployer.deploy(VoteChainDonorNFT);
+    // const voteChainDonorNFTInstance = await VoteChainDonorNFT.deployed();
+    // await voteChainInstance.updateDonorNFT(voteChainDonorNFTInstance.address);
 
     // Step 3: Deploy VoteChainVoterNFT and update VoteChain with its address
-    await deployer.deploy(VoteChainVoterNFT);
-    const voteChainVoterNFTInstance = await VoteChainVoterNFT.deployed();
-    await voteChainInstance.updateVoterNFT(voteChainVoterNFTInstance.address);
+    // await deployer.deploy(VoteChainVoterNFT);
+    // const voteChainVoterNFTInstance = await VoteChainVoterNFT.deployed();
+    // await voteChainInstance.updateVoterNFT(voteChainVoterNFTInstance.address);
 
     // Step 4: Deploy VoteChainNPONFT and update VoteChain with its address
     await deployer.deploy(VoteChainNPONFT);
@@ -24,7 +24,7 @@ module.exports = async function (deployer) {
     await voteChainInstance.updateNPONFT(voteChainNPONFTInstance.address);
 
     // Step 5: Update Allowlist in voteChainDonorNFTInstance, voteChainVoterNFTInstance, voteChainNPONFTInstance
-    await voteChainDonorNFTInstance.updateAllowedList(voteChainInstance.address);
-    await voteChainVoterNFTInstance.updateAllowedList(voteChainInstance.address);
-    await voteChainNPONFTInstance.updateAllowedList(voteChainInstance.address);
+    // await voteChainDonorNFTInstance.updateAllowedList(voteChainInstance.address, true);
+    // await voteChainVoterNFTInstance.updateAllowedList(voteChainInstance.address, true);
+    await voteChainNPONFTInstance.updateAllowedList(voteChainInstance.address, true);
 };
