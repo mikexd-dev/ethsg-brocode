@@ -16,6 +16,12 @@ contract VoteChain is Ownable, ReentrancyGuard {
     // Mapping of NPO & Data
     mapping(address => string) internal npoData;
 
+    // Mapping of Proposal & NPO
+    mapping(bytes32 => address) internal ownerOfProposal;
+
+    // Mapping of NPO Launched
+    mapping(address => bytes32[]) internal nposProposals;
+
     // Mapping of NPOWallet
     address[] internal npoWallets;
 
@@ -135,6 +141,8 @@ contract VoteChain is Ownable, ReentrancyGuard {
         proposalDonatedToken[proposalId] = token;
         proposalCategories[proposalId] = stringToKeccak256(category);
         proposalData[proposalId] = data;
+        ownerOfProposal[proposalId] = msg.sender;
+        nposProposals[msg.sender].push(proposalId);
         totalProposals++;
         emit ProposalCreated(
             proposalId,
@@ -269,6 +277,20 @@ contract VoteChain is Ownable, ReentrancyGuard {
             }
         }
         return openProposals;
+    }
+
+    // Get the List of All Proposals Created by an NPO
+    function getListOfAllProposalsByNPO(
+        address npo
+    ) public view returns (bytes32[] memory) {
+        return nposProposals[npo];
+    }
+
+    // Get Proposer of NPO
+    function getProposerOfProposalId(
+        bytes32 proposalId
+    ) public view returns (address) {
+        return ownerOfProposal[proposalId];
     }
 
     // Convert String to Keccak256
