@@ -169,7 +169,7 @@ const DonationPage = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {!isApproved && <Button onClick={() => setLimit()}>Approve Limit</Button>}
+      {/* {!isApproved && <Button onClick={() => setLimit()}>Approve Limit</Button>} */}
       {!isDonated && <Button onClick={() => donate()}>Donate</Button>}
     </div>
   );

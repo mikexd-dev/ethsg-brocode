@@ -1,95 +1,65 @@
+# VoteChain
 
-# Menyala NextJS Hackathon Starter
+## Name and summary of the project
 
-This Next.js Web3 Starter is a full stack starter repository designed for decentralized application (dApp) development during hackathons. It comes with TypeScript and is built to help you quickly get started with your Web3 project.
+VoteChain is a blockchain-enabled, vote-weighted donation platform that aims to increase transparency, reduce donor fatigue, and improve tracking in the donation system. By harnessing the power of blockchain, VoteChain establishes a decentralized and secure platform where donors can contribute funds and participate in voting for the allocation of resources to different causes and projects.
+<br>
 
-# Code Structure
+## Names/pseudonyms of team members and contact information
 
-Next13 introduce the concept of non-routes folder as defined by (), so any folder names such as (auth)
-, (landing-unprotected) and (protected) do not affect the routes but act as the logical grouping of the pages and components.
-so in the template example, we have the following routes:
-- auth
-- dashboard
-- profile
+- [Terry Tan](x.com/terrytjw)
+- [Lim Gang Rui](x.com/terrytjw)
+- [Mike Zhang](x.com/mikexd_dev)
+- [Rajesh Raachabattuni](x.com/terrytjw)
+- [Swastik Mishra](x.com/terrytjw)
+  <br>
 
-Logical groupings that derived from the actual routes are (auth), (protected) and (unprotected)
+## The Main Track submitted for
 
-UI Components generated from shadcn sdk are automatically parked in ```components/ui``` and are subjected to customisation. Custom UI components created should go directly under ```components``` folder. There can be subfolder like ```example1``` for logical grouping of components as well
+Problem statement 1:
+How can we establish a platform where charities can input their programs for precise donor matching, while also enabling donors to review charities' track records to build credibility and trust in their donations?
+<br>
 
-# Tech Stack
-- Nextjs
-- Tailwind CSS
-- Shadcn UI (customisable UI)
-- Valtio (self-aware proxy state)
-- Framer-motion
-- Viem
-- Wagmi
-- NextAuth
-- Self-Custodian Wallet
-    - Wallet Connect
-    - SIWE
-- Prisma (if needed)
-- Postgres (if needed: supabase/vercel)
+## An overview of what problem is being addressed (i.e. target industry and pain points addressed)
 
+The donation system is a black box.
+Donor Fatigue:
+This is a problem in the current donation system because donors may become overwhelmed by the number of charitable causes and organizations seeking their support. This can lead to donors feeling disengaged and less likely to contribute to any cause, as they may feel their donations are not making a significant impact.
+Transparency:
+Donors often cannot see how their donations are being utilized by charities. Lack of visibility leads to mistrust and skepticism, deterring potential donors from contributing to charitable causes. It is also difficult to trace donations from the donor to the recipient. Lack of efficient tracking results in mismanagement of funds, fraud, and donations not reaching their intended beneficiaries.
+<br>
 
-## Use the template
+## (if any) Sponsored Challenges to be considered and an explanation of how the project uses the technology/application
 
-Create a new repo with this template 
+- Polygon - Challenge track #1
+- Metamask - Challenge track #3
+  <br>
 
-    
-## Run Locally
+## Challenges and how we overcame
 
-Clone the project
+**Voting mechanism** <br>
+We had to decide on a voting mechanism that would be fair and democratic. We decided to use a vote-weighted system, where the weight of a donor's vote is proportional to the amount they have contributed. This ensures that donors have a say in how their funds are used and encourages participation in the decision-making process.
+<br>
 
-```bash
-  git clone https://link-to-project
-```
+## Future plans for the project
 
-Go to the project directory
+**Accurate donor matching** <br>
+An algorithm that matches donors with charities based on their preferences, donation history, and the charity's track record. This can be achieved by analyzing donor data and using machine learning techniques to predict the best matches.
+**Donation Explorer** <br>
+A comprehensive dashboard that allows donors to track their donations and see how their funds are being utilized. This can be achieved by indexing the donation contract transactions.
+**Vote-weight enhancements** <br>
+Implement a more sophisticated voting system that takes into account the amount of votes a donor has proportional to how much that have contributed.
+**Gamification** <br>
+Implement a gamification system to incentivize donors and improve the ease of donation on the platform.
+<br>
 
-```bash
-  cd my-project
-```
+## A list of tech stack (solutions, technology infrastructure, technology services, etc.) used by the team to build your project
 
-Install dependencies
-
-```bash
-  yarn
-```
-
-Start the server
-
-```bash
-  yarn dev
-```
-
-
-## Environment Variables
-
-To run this project, you will need to add the following environment variables to your .env file
-
-`NODE_ENV`
-`NEXT_PUBLIC_W3C_PID`
-`NEXT_PUBLIC_SIGNIN_MESSAGE`
-`NEXTAUTH_SECRET`
-
-- example contracts
-`NEXT_PUBLIC_GREETING_CONTRACT`="0x2459b55d846656f9BD9ddA049662f5da80B7c534"
-`NEXT_PUBLIC_NFT_CONTRACT`="0x984971D869173102b36312A3EE9B4C476BdA0aE2"
-
-
-## Roadmap
-
-- ~~More viem usage examples soon~~
-- Additional Rainbow Kit integration
-- More shadcn UI integration
-    - ~~Card Component~~
-    - ~~Button Component~~
-    - ~~Dropdown Component~~
-- More commonly used UI Components
-    - ~~Navbar Component~~
-    - ~~ModeToggle Component~~
-- ~~Framer Motion Integration~~
-- ~~Theme Integration~~
-- OpenAI code template integration
-
+- [Next.js](https://nextjs.org/)
+- [Vercel](https://vercel.com/)
+- [shadcn/ui](https://github.com/shadcn/ui)
+- [Truffle](https://www.trufflesuite.com/)
+- [ethers.js](https://docs.ethers.io/v5/)
+- [thirdweb](https://www.thirdweb.com/)
+- [Polygon zkEVM](https://polygon.technology/polygon-zkevm)
+- [Metamask](https://metamask.io/)
