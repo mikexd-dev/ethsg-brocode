@@ -43,20 +43,44 @@ const Homepage = () => {
     },
   });
 
+  const [provider, setProvider] = useState<any>(null);
+  const [proposalData, setProposalData] = useState<any>(null);
+  const [npoData, setNpoData] = useState<any>(null);
+
   // functions
   const {
     data: npoInfo,
     isSuccess: isNPOInfoSuccess,
     isLoading: isLoadingNPOInfoSuccess,
     refetch,
-  } = useContractRead({
+  }: any = useContractRead({
     address: voteChainContractAddress,
     abi: voteChainContractAbi,
     functionName: "getNPOInfo",
   });
 
-  const [provider, setProvider] = useState<any>(null);
-  const [proposalData, setProposalData] = useState<any>(null);
+  useEffect(() => {
+    const fetchProposals = async () => {
+      if (npoInfo[0].length > 0) {
+        await fetchNpo();
+      }
+    };
+
+    fetchProposals();
+  }, [npoInfo]);
+
+  const fetchNpo = async () => {
+    const promises = await npoInfo[1].map(fetchDetails);
+    const results = await Promise.all(promises);
+
+    npoInfo[0].map((npo: any) => {
+      results.forEach((result: any) => {
+        result.npoId = npo;
+      });
+    });
+
+    setNpoData(results);
+  };
 
   useEffect(() => {
     if (window.ethereum) {
@@ -79,7 +103,6 @@ const Homepage = () => {
   useEffect(() => {
     const fetchProposals = async () => {
       if (openProposals.length > 0) {
-        console.log(openProposals);
         await fetchProposalDetails();
       }
     };
@@ -96,7 +119,6 @@ const Homepage = () => {
       );
       const proposalUrl = await contract.getProposalData(proposal);
       const proposalDataJson = await fetchDetails(proposalUrl);
-      console.log(proposalDataJson, "here");
       proposalDataJson.proposalId = proposal;
       return proposalDataJson;
     }
@@ -107,22 +129,8 @@ const Homepage = () => {
 
     const promises = openProposals.map(fetchProposalData);
     const results = await Promise.all(promises);
-    console.log(results);
     results.forEach((result) => data.push(result));
 
-    // openProposals.map(async (proposal: any) => {
-    //   if (provider) {
-    //     const contract = new ethers.Contract(
-    //       voteChainContractAddress,
-    //       voteChainContractAbi,
-    //       provider
-    //     );
-    //     const proposalUrl = await contract.getProposalData(proposal);
-    //     const proposalDataJson = await fetchDetails(proposalUrl);
-    //     proposalDataJson.proposalId = proposal;
-    //     data.push(proposalDataJson);
-    //   }
-    // });
     setProposalData(data);
   };
 
@@ -154,7 +162,7 @@ const Homepage = () => {
         </div>
         <div className="flex w-3/4 flex-col">
           <Funds />
-          <Charities />
+          <Charities npo={npoData} />
         </div>
       </div>
     </div>
