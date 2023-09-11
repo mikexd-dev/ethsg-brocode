@@ -7,11 +7,11 @@ VoteChain is a blockchain-enabled, vote-weighted donation platform that aims to 
 
 ## Names/pseudonyms of team members and contact information
 
-- [Terry Tan](x.com/terrytjw)
-- [Lim Gang Rui](x.com/terrytjw)
-- [Mike Zhang](x.com/mikexd_dev)
-- [Rajesh Raachabattuni](x.com/terrytjw)
-- [Swastik Mishra](x.com/terrytjw)
+- [Terry Tan](https://www.linkedin.com/in/mikexd/terrytjw)
+- [Lim Gang Rui](https://www.linkedin.com/in/limgangrui)
+- [Mike Zhang](https://www.linkedin.com/in/mikexd/)
+- [Rajesh Raachabattuni](x.com/oxrajesh)
+- [Swastik Mishra](https://www.linkedin.com/in/swastik-mishra-555b62132)
   <br>
 
 ## The Main Track submitted for

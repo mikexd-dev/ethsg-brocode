@@ -1,14 +1,14 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
-import Providers from './_providers/Providers';
+import Providers from "./_providers/Providers";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Hackathon Template',
-  description: 'Custom Web3 Hackathon Template',
+  title: "VoteChain",
+  description: "Donation Reimagined.",
 };
 
 export default function RootLayout({
