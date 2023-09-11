@@ -108,6 +108,7 @@ const Homepage = () => {
             data.push(proposalDataJson);
           }
         });
+        console.log(data)
         setProposalData(data);
       }
     };
