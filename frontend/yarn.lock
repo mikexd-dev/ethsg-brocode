@@ -878,7 +878,7 @@
     hash.js "^1.1.7"
     uuidv4 "^6.2.13"
 
-"@particle-network/auth@>=1.1.0":
+"@particle-network/auth@>=1.1.0", "@particle-network/auth@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@particle-network/auth/-/auth-1.1.0.tgz#766cbeda4819063db27dd215c6918d4e7c0ce22a"
   integrity sha512-9d8W7yK8SJocnhMB3l/PL7XacnX9yML9o8Q/PKlQn3KdEd4u/t6crywUZ5iutSK5D59pjgvffrO8CNkFB/siCw==
@@ -926,7 +926,7 @@
     crypto-js "^4.1.1"
     uuidv4 "^6.2.13"
 
-"@particle-network/provider@>=1.1.0":
+"@particle-network/provider@>=1.1.0", "@particle-network/provider@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@particle-network/provider/-/provider-1.1.0.tgz#a5f592d046a2e2c192162f7775b8413bc013220f"
   integrity sha512-ClFvsA8WVdztV23CfYi1ORGUzC018H7JuN7cSyC+clfAJnnQ9jUD6wpWnOxtfodT2a/641Jp+4nadBejyVdAZw==
@@ -982,6 +982,17 @@
     "@babel/runtime" "^7.13.10"
     "@radix-ui/react-primitive" "1.0.3"
 
+"@radix-ui/react-avatar@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-avatar/-/react-avatar-1.0.3.tgz#06a31d06bfb03be5e0d156a5af26a437dce96e7f"
+  integrity sha512-9ToF7YNex3Ste45LrAeTlKtONI9yVRt/zOS158iilIkW5K/Apeyb/TUQlcEFTEFvWr8Kzdi2ZYrm1/suiXPajQ==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-use-callback-ref" "1.0.1"
+    "@radix-ui/react-use-layout-effect" "1.0.1"
+
 "@radix-ui/react-collection@1.0.3":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@radix-ui/react-collection/-/react-collection-1.0.3.tgz#9595a66e09026187524a36c6e7e9c7d286469159"
@@ -1006,6 +1017,27 @@
   integrity sha512-ebbrdFoYTcuZ0v4wG5tedGnp9tzcV8awzsxYph7gXUyvnNLuTIcCk1q17JEbnVhXAKG9oX3KtchwiMIAYp9NLg==
   dependencies:
     "@babel/runtime" "^7.13.10"
+
+"@radix-ui/react-dialog@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@radix-ui/react-dialog/-/react-dialog-1.0.4.tgz#06bce6c16bb93eb36d7a8589e665a20f4c1c52c1"
+  integrity sha512-hJtRy/jPULGQZceSAP2Re6/4NpKo8im6V8P2hUqZsdFiSL8l35kYsw3qbRI6Ay5mQd2+wlLqje770eq+RJ3yZg==
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@radix-ui/primitive" "1.0.1"
+    "@radix-ui/react-compose-refs" "1.0.1"
+    "@radix-ui/react-context" "1.0.1"
+    "@radix-ui/react-dismissable-layer" "1.0.4"
+    "@radix-ui/react-focus-guards" "1.0.1"
+    "@radix-ui/react-focus-scope" "1.0.3"
+    "@radix-ui/react-id" "1.0.1"
+    "@radix-ui/react-portal" "1.0.3"
+    "@radix-ui/react-presence" "1.0.1"
+    "@radix-ui/react-primitive" "1.0.3"
+    "@radix-ui/react-slot" "1.0.2"
+    "@radix-ui/react-use-controllable-state" "1.0.1"
+    aria-hidden "^1.1.1"
+    react-remove-scroll "2.5.5"
 
 "@radix-ui/react-direction@1.0.1":
   version "1.0.1"

@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import Router from "next/router";
 
 import { useAccount } from "@particle-network/connect-react-ui";
+import ProposalComponent from "@/components/Proposal";
 export default function Home() {
   const { data, isSignedIn, signOut, signIn } = useSIWE();
   const account = useAccount();
@@ -36,6 +37,7 @@ export default function Home() {
         <Link href="/dashboard">
           <Button variant="default">Go to Dashboard</Button>
         </Link>
+        <ProposalComponent />
       </main>
     </div>
   );

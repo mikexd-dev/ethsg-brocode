@@ -1,13 +1,13 @@
-import { COOKIE_NAME } from './consts';
-import { sealData, unsealData } from 'iron-session';
-import { NextRequest, NextResponse } from 'next/server';
+import { COOKIE_NAME } from "./consts";
+import { sealData, unsealData } from "iron-session";
+import { NextRequest, NextResponse } from "next/server";
 
 if (!process.env.SESSION_SECRET) {
-  throw new Error('SESSION_SECRET cannot be empty.');
+  throw new Error("SESSION_SECRET cannot be empty.");
 }
 
-if (!process.env.NEXT_PUBLIC_W3C_PID) {
-  throw new Error('NEXT_PUBLIC_W3C_PID cannot be empty.');
+if (!process.env.NEXT_PUBLIC_W3C_PROJECT_ID) {
+  throw new Error("NEXT_PUBLIC_W3C_PROJECT_ID cannot be empty.");
 }
 
 const SESSION_OPTIONS = {
@@ -59,7 +59,7 @@ class Session {
       await sealData(this.toJSON(), SESSION_OPTIONS),
       {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === "production",
       }
     );
   }

@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { navVariants } from "@/lib/motion";
 import { ModeToggle } from "./ModeToggle";
-// import { ConnectKitButton } from 'connectkit';
+import { ConnectKitButton } from "connectkit";
 
 import "@particle-network/connect-react-ui/dist/index.css";
 import { ConnectButton } from "@particle-network/connect-react-ui";
@@ -25,8 +25,8 @@ const Navbar = ({ title }: NavbarProps) => (
       </div>
       <div className="flex flex-row items-center justify-end flex-1 gap-2">
         <ModeToggle />
-        {/* <ConnectKitButton /> */}
-        <ConnectButton />
+        <ConnectKitButton />
+        {/* <ConnectButton /> */}
       </div>
     </div>
   </motion.nav>

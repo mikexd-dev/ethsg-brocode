@@ -1,8 +1,8 @@
-'use client';
-import React from 'react';
-import WagmiProvider from './WagmiProvider';
-import AuthContext from './AuthContext';
-import { ThemeProvider } from './ThemeProvider';
+"use client";
+import React from "react";
+import WagmiProvider from "./WagmiProvider";
+import AuthContext from "./AuthContext";
+import { ThemeProvider } from "./ThemeProvider";
 
 type ProviderType = {
   children: React.ReactNode;
