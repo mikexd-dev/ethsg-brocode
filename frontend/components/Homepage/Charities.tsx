@@ -1,4 +1,6 @@
 import ProposalComponent from "@/components/Proposal";
+import { useState } from "react";
+import CharityPopup from "@/components/Charity";
 
 const Charities = () => {
 
@@ -125,6 +127,14 @@ const Charities = () => {
         }
     ]
 
+    const [showPopup, setShowPopup] = useState(false)
+    const [selectedCharity, setSelectedCharity] = useState({})
+
+    const showCharity = (index: number) => {
+        setSelectedCharity(CharitiesArray[index])
+        setShowPopup(true)
+    }
+
     return <>
         <div className="w-full mt-12">
             <h1 className="text-3xl font-semibold mb-4">Charities</h1>
@@ -132,7 +142,7 @@ const Charities = () => {
             <div className="grid grid-cols-3 gap-4 w-full">
                 {
                     CharitiesArray.map((charity, index) => {
-                        return <div key={index} className="bg-white rounded-lg p-4 w-full">
+                        return <div key={index} onClick={() => showCharity(index)} className="bg-white rounded-lg p-4 w-full cursor-pointer">
                             <p className="flex justify-between font-semibold">
                                 <img className="w-[60px] h-[60px] object-cover rounded-full" src={charity.image}></img>
                                 <span className="tag tagBlue">Family</span>
@@ -150,6 +160,10 @@ const Charities = () => {
                 }
             </div>
         </div>
+
+        {
+            showPopup && selectedCharity ? <CharityPopup charity={selectedCharity} /> : <></>
+        }
     </>
 
 }
