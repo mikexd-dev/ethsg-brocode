@@ -94,6 +94,13 @@ module.exports = {
       gas: 3000000,
       gasPrice: 250000000000
     },
+    polyzktest: {
+      provider: () => new HDWalletProvider(privateKey, `https://polygonzkevm-testnet.g.alchemy.com/v2/a6tzP5-uI3Oigg_czM3MS-jOZheEqMJh`),
+      network_id: 1442,
+      confirmations: 0, // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 50, // # of blocks before a deployment times out  (minimum/default: 50)
+      websockets: false
+    },
   },
 
   // Set default mocha options here, use special reporters etc.
@@ -121,6 +128,7 @@ module.exports = {
     bscscan: process.env.BSCSCAN_API,
     etherscan: process.env.ETHERSCAN_API,
     polygonscan: process.env.POLYSCAN_API,
-    snowtrace: process.env.AVALANCHE_API
+    snowtrace: process.env.AVALANCHE_API,
+    zkevm_polygonscan: process.env.POLYSCAN_ZK_API,
   },
 };
