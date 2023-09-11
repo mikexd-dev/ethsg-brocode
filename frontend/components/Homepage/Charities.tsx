@@ -141,17 +141,21 @@ const Charities = ({ npo }: any) => {
   const [selectedCharity, setSelectedCharity] = useState({});
 
   const showCharity = (index: number) => {
-    setSelectedCharity(CharitiesArray[index]);
+    setSelectedCharity(npo[index]);
     setShowPopup(true);
   };
+
+  if (npo == null) {
+    npo = [];
+  }
 
   return (
     <>
       <div className="w-full mt-12">
         <h1 className="text-3xl font-semibold mb-4">Charities</h1>
 
-        <div className="grid grid-cols-3 gap-4 w-full">
-          {CharitiesArray.map((charity, index) => {
+        <div className="grid grid-cols-3 gap-4 w-full overflow-y-scroll max-h-[600px]">
+          {npo.map((charity: any, index: any) => {
             return (
               <div
                 key={index}
@@ -161,9 +165,11 @@ const Charities = ({ npo }: any) => {
                 <p className="flex justify-between font-semibold">
                   <img
                     className="w-[60px] h-[60px] object-cover rounded-full"
-                    src={charity.image}
+                    src={
+                      "https://www.wiprofoundation.org/wp-content/uploads/2021/08/SEF_FI-1170x531_c.png"
+                    }
                   ></img>
-                  <span className="tag tagBlue">Family</span>
+                  <span className="tag tagBlue">{charity.category}</span>
                 </p>
                 <p className="text-slate-800 mt-2 font-semibold">
                   {charity.npo}
@@ -184,7 +190,11 @@ const Charities = ({ npo }: any) => {
       </div>
 
       {showPopup && selectedCharity ? (
-        <CharityPopup charity={selectedCharity} />
+        <CharityPopup
+          charity={selectedCharity}
+          open={showPopup}
+          setOpen={setShowPopup}
+        />
       ) : (
         <></>
       )}
