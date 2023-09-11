@@ -14,6 +14,7 @@ import {
   arbitrum,
   base,
   zora,
+  localhost,
 } from "wagmi/chains";
 
 import {
@@ -35,6 +36,7 @@ import {
   PolygonMumbai,
 } from "@particle-network/chains";
 import { evmWallets } from "@particle-network/connect";
+import { publicProvider } from "wagmi/providers/public";
 
 type WagmiProviderType = {
   children: React.ReactNode;
@@ -48,6 +50,7 @@ const chains = [
   arbitrum,
   base,
   zora,
+  localhost,
 ];
 const projectId = process.env.NEXT_PUBLIC_W3C_PID;
 
@@ -57,6 +60,11 @@ const projectId = process.env.NEXT_PUBLIC_W3C_PID;
 //   chains,
 // });
 
+const { publicClient, webSocketPublicClient } = configureChains(chains, [
+  publicProvider(),
+]);
+
+// connect kit
 const wagmiConfig = createConfig(
   getDefaultConfig({
     appName: APP_NAME,
@@ -65,6 +73,12 @@ const wagmiConfig = createConfig(
     chains,
   })
 );
+
+// const wagmiConfig = createConfig({
+//   autoConnect: true,
+//   publicClient,
+//   webSocketPublicClient,
+// });
 
 const MyCustomAvatar = ({
   address,
@@ -144,54 +158,53 @@ const siweConfig = {
 const WagmiProvider = ({ children }: WagmiProviderType) => {
   return (
     <WagmiConfig config={wagmiConfig}>
-      {/* <SIWEProvider {...siweConfig}>
+      <SIWEProvider {...siweConfig}>
         <ConnectKitProvider
           options={{
             customAvatar: MyCustomAvatar,
           }}
-        > */}
-      <ModalProvider
-        options={{
-          projectId: "c3bacdec-d550-48f0-bb4c-bd7efd3fba96",
-          clientKey: "cvqgEVTsyg4jVUGMqpbava1SOfDxr7MLx3ztCHHX",
-          appId: "76a1d3fa-21e2-4c6f-a3f0-cb3806c8fd07",
-          chains: [PolygonMumbai],
-          particleWalletEntry: {
-            //optional: particle wallet config
-            displayWalletEntry: true, //display wallet button when connect particle success.
-            defaultWalletEntryPosition: WalletEntryPosition.BR,
-            supportChains: [PolygonMumbai],
-            customStyle: {}, //optional: custom wallet style
-          },
-          securityAccount: {
-            //optional: particle security account config
-            //prompt set payment password. 0: None, 1: Once(default), 2: Always
-            promptSettingWhenSign: 1,
-            //prompt set master password. 0: None(default), 1: Once, 2: Always
-            promptMasterPasswordSettingWhenLogin: 1,
-          },
-          wallets: evmWallets({
-            projectId: "walletconnect projectId", //replace with walletconnect projectId
-            showQrModal: false,
-          }),
-        }}
-        theme={"auto"}
-        language={"en"} //optional：localize, default en
-        walletSort={["Particle Auth", "Wallet"]} //optional：walelt order
-        particleAuthSort={[
-          //optional：display particle auth items and order
-          "email",
-          "phone",
-          "google",
-          "apple",
-          "facebook",
-        ]}
-      >
-        {children}
-      </ModalProvider>
-
-      {/* </ConnectKitProvider>
-      </SIWEProvider> */}
+        >
+          <ModalProvider
+            options={{
+              projectId: process.env.NEXT_PUBLIC_PARTICLE_PROJECT_ID!,
+              clientKey: process.env.NEXT_PUBLIC_PARTICLE_CLIENT_KEY!,
+              appId: process.env.NEXT_PUBLIC_PARTICLE_APP_ID!,
+              chains: [PolygonMumbai],
+              particleWalletEntry: {
+                //optional: particle wallet config
+                displayWalletEntry: true, //display wallet button when connect particle success.
+                defaultWalletEntryPosition: WalletEntryPosition.BR,
+                supportChains: [PolygonMumbai],
+                customStyle: {}, //optional: custom wallet style
+              },
+              securityAccount: {
+                //optional: particle security account config
+                //prompt set payment password. 0: None, 1: Once(default), 2: Always
+                promptSettingWhenSign: 1,
+                //prompt set master password. 0: None(default), 1: Once, 2: Always
+                promptMasterPasswordSettingWhenLogin: 1,
+              },
+              wallets: evmWallets({
+                projectId: process.env.NEXT_PUBLIC_W3C_PROJECT_ID, //replace with walletconnect projectId
+                showQrModal: false,
+              }),
+            }}
+            theme={"auto"}
+            language={"en"} //optional：localize, default en
+            walletSort={["Particle Auth", "Wallet"]} //optional：walelt order
+            particleAuthSort={[
+              //optional：display particle auth items and order
+              "email",
+              "phone",
+              "google",
+              "apple",
+              "facebook",
+            ]}
+          >
+            {children}
+          </ModalProvider>
+        </ConnectKitProvider>
+      </SIWEProvider>
     </WagmiConfig>
   );
 };
