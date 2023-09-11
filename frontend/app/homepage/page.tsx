@@ -16,15 +16,24 @@ import { ethers } from "ethers";
 
 import { useCustomContractRead } from "@/lib/hooks";
 import { useToast } from "@/components/ui/use-toast";
+import { fadeIn } from "@/lib/motion";
+import { motion } from "framer-motion";
+import ConfettiExplosion from "react-confetti-explosion";
 
 const voteChainContractAbi = vote_chain;
 const voteChainContractAddress = "0xbdB220a0B2823E00e27C695346dF1FC2521320Fd";
 
-const daiTokenContractAbi = dai_token;
-const daiPayTokenAddress = "0x834abB2d7A935979f704D019fc089DBcE1b914D7";
-
 const Homepage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
+  const [isExploding, setIsExploding] = useState(false);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      setProvider(provider);
+    }
+  }, []);
+
   const eventNames = [
     "NPOUpdated",
     "DonorUpdated",
@@ -38,10 +47,31 @@ const Homepage = () => {
   useContractEvent({
     address: voteChainContractAddress,
     abi: voteChainContractAbi,
+    eventName: "Voted",
+    listener: async (event) => {
+      setIsExploding(false);
+      toast.loading("Updating Votes...");
+      console.log("Event data:", event);
+      //   const contract = new ethers.Contract(
+      //     voteChainContractAddress,
+      //     voteChainContractAbi,
+      //     provider
+      //   );
+      toast.remove();
+      toast.success("Voting Successful!");
+      setIsExploding(true);
+    },
+  });
+
+  useContractEvent({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
     eventName: "Donated",
     listener: async (event) => {
+      setIsExploding(false);
       toast.loading("Updating funds...");
       console.log("Event data:", event);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
       const contract = new ethers.Contract(
         voteChainContractAddress,
         voteChainContractAbi,
@@ -57,6 +87,16 @@ const Homepage = () => {
       const educationAmount = await contract.getDonationAmountByCategory(
         "Education"
       );
+      console.log(
+        animalAmount,
+        "animalAmount",
+        specialAmount,
+        "specialAmount",
+        familyAmount,
+        "familyAmount",
+        educationAmount,
+        "educationAmount"
+      );
       setFunds({
         animals: animalAmount,
         specialNeeds: specialAmount,
@@ -65,6 +105,7 @@ const Homepage = () => {
       });
       toast.remove();
       toast.success("Donation Successful!");
+      setIsExploding(true);
     },
   });
 
@@ -148,13 +189,6 @@ const Homepage = () => {
     setNpoData(data);
   };
 
-  useEffect(() => {
-    if (window.ethereum) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      setProvider(provider);
-    }
-  }, []);
-
   // fetch proposal - start of code
   const {
     data: openProposals,
@@ -224,14 +258,22 @@ const Homepage = () => {
       <div>
         <Toaster />
       </div>
+      {/* <div className="h-screen flex justify-center items-center"></div> */}
+
       <div className="flex">
         <Navbar />
       </div>
       <div className="mt-4 flex gap-6">
         <div className="flex w-1/4 flex-col">
-          <Sidebar openProposals={proposalData} />
+          <Sidebar
+            openProposals={proposalData}
+            voteChainContractAbi={voteChainContractAbi}
+            voteChainContractAddress={voteChainContractAddress}
+          />
         </div>
+
         <div className="flex w-3/4 flex-col">
+          {isExploding && <ConfettiExplosion />}
           <Funds
             animals={funds && funds.animals}
             specialNeeds={funds && funds.specialNeeds}

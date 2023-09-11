@@ -92,7 +92,7 @@ const CharityPopup = (props: any) => {
           <Tabs defaultValue="details" className="w-full">
             <TabsList>
               <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="proposals">Proposals</TabsTrigger>
+              <TabsTrigger value="proposals">Proposals (TBD)</TabsTrigger>
             </TabsList>
             <TabsContent value="details">
               <DialogDescription>

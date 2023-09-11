@@ -13,6 +13,8 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import toast from "react-hot-toast";
+import { fadeIn } from "@/lib/motion";
+import { motion } from "framer-motion";
 
 const Funds = ({
   animals,
@@ -69,8 +71,6 @@ const Funds = ({
   const [provider, setProvider] = useState<any>(null);
   const { address, isConnecting, isDisconnected } = useAccount();
 
-  console.log(animals, "animals");
-
   useEffect(() => {
     if (window.ethereum) {
       const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -85,8 +85,8 @@ const Funds = ({
       specialNeeds && ethers.utils.formatEther(specialNeeds);
     tempFunds[2].amount = family && ethers.utils.formatEther(family);
     tempFunds[3].amount = education && ethers.utils.formatEther(education);
-
-    setFunds(tempFunds);
+    console.log(tempFunds, "tempFunds");
+    setFunds([...tempFunds]);
   }, [animals, specialNeeds, family, education]);
 
   const checkAndSetAllowance = async (amount: any) => {
@@ -160,7 +160,11 @@ const Funds = ({
   }, []);
 
   return (
-    <>
+    <motion.div
+      initial="hidden"
+      whileInView="show"
+      variants={fadeIn("left", "spring", 1 * 0.5, 0.75)}
+    >
       <div className="w-full">
         <h1 className="text-3xl font-semibold mb-4">Funds</h1>
 
@@ -209,7 +213,7 @@ const Funds = ({
           })}
         </div>
       </div>
-    </>
+    </motion.div>
   );
 };
 

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import Providers from "./_providers/Providers";
+import { AnimatePresence } from "framer-motion";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        {/* <AnimatePresence initial={false} mode="popLayout"> */}
         <Providers>{children}</Providers>
+        {/* </AnimatePresence> */}
       </body>
     </html>
   );

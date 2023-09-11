@@ -2,8 +2,14 @@ import { Dialog } from "@/components/ui/dialog";
 import { DialogContent } from "@radix-ui/react-dialog";
 import ProposalPopup from "../Proposal";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import { fadeIn } from "@/lib/motion";
 
-const Sidebar = ({ openProposals }: any) => {
+const Sidebar = ({
+  openProposals,
+  voteChainContractAbi,
+  voteChainContractAddress,
+}: any) => {
   console.log(openProposals);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedProposal, setSelectedProposal] = useState(null);
@@ -19,7 +25,13 @@ const Sidebar = ({ openProposals }: any) => {
 
   return (
     <>
-      <div className="bg-[#1F2937] p-4 rounded-lg">
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        variants={fadeIn("right", "spring", 1 * 0.5, 0.75)}
+        className={`transition-[flex] duration-[0.7s] ease-out-flex cursor-pointer bg-[#1F2937] p-4 rounded-lg`}
+      >
+        {/* <div className=""> */}
         <h3 className="font-semibold text-white mb-2">How it works</h3>
         <p className="text-white">
           Checkout this short 3 minutes video to get started and make an impact.
@@ -28,9 +40,15 @@ const Sidebar = ({ openProposals }: any) => {
           src="https://nyckidsrise.org/wp-content/uploads/2021/08/olmos_NYC-kids-RISE-8530_1920x1200.jpg"
           className="rounded mt-4 object-contain"
         />
-      </div>
+        {/* </div> */}
+      </motion.div>
 
-      <div className="bg-[#E5E7EB] p-4 rounded-lg mt-4 overflow-y-scroll max-h-[600px]">
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        variants={fadeIn("right", "spring", 1 * 0.5, 0.75)}
+        className="bg-[#E5E7EB] p-4 rounded-lg mt-4 overflow-y-scroll max-h-[600px]"
+      >
         <p className="font-semibold">
           Open Proposals{" "}
           <span className="ml-1 font-normal text-sm text-white bg-[#9CA3AF] px-2 py-1 rounded-full">
@@ -80,13 +98,15 @@ const Sidebar = ({ openProposals }: any) => {
               <div>loading...</div>;
             }
           })}
-      </div>
+      </motion.div>
 
       {showPopup && selectedProposal ? (
         <ProposalPopup
           proposal={selectedProposal}
           open={showPopup}
           setOpen={setShowPopup}
+          voteChainContractAbi={voteChainContractAbi}
+          voteChainContractAddress={voteChainContractAddress}
         />
       ) : (
         <></>
