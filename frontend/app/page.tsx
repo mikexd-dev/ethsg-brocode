@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/Homepage/Navbar";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -10,6 +10,7 @@ import Router from "next/router";
 
 import { useAccount } from "@particle-network/connect-react-ui";
 import ProposalComponent from "@/components/Proposal";
+import Homepage from "./homepage/page";
 export default function Home() {
   const { data, isSignedIn, signOut, signIn } = useSIWE();
   const account = useAccount();
@@ -24,21 +25,6 @@ export default function Home() {
   if (!isMounted) return null;
 
   return (
-    <div className="h-full relative">
-      <Navbar title="title" />
-      <main className="flex min-h-screen flex-col items-center justify-center">
-        <h1 className="text-3xl font-bold tracking-tight text-gray-400">
-          Welcome
-        </h1>
-        <p className="text-sm">{account && account}</p>
-        <h2 className="text-2xl tracking-tight text-gray-500 p-2">
-          Lets get started!
-        </h2>
-        <Link href="/dashboard">
-          <Button variant="default">Go to Dashboard</Button>
-        </Link>
-        <ProposalComponent />
-      </main>
-    </div>
+    <Homepage/>
   );
 }
