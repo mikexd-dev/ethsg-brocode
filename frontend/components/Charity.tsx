@@ -10,9 +10,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Image from "next/image";
+import { useContractRead } from "wagmi";
 
 const CharityPopup = (props: any) => {
   const charity = props.charity;
+  const { voteChainContractAbi, voteChainContractAddress } = props;
+  console.log(charity, "npoId");
+  const { data, isSuccess, isLoading }: any = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getListOfAllProposalsByNPO",
+    args: ["0x6C66884502B9542298c4547c25bc415F26D3c2f4"],
+  });
+
+  console.log(data, "single npo data");
 
   if (charity.title == "") return <></>;
 
@@ -24,7 +35,19 @@ const CharityPopup = (props: any) => {
             <div className="flex w-2/3 items-center">
               <div className="flex mr-4">
                 <img
-                  src={charity.image}
+                  src={
+                    charity.category == "Animals"
+                      ? "https://d.newsweek.com/en/full/2239986/cul-map-dogs-10.jpg"
+                      : charity.category == "Families"
+                      ? "https://cfsi.ph/wp-content/uploads/2021/10/Listening-in-Rakhine-State-Myanmar-scaled.jpg"
+                      : charity.category == "Education"
+                      ? "https://www.wiprofoundation.org/wp-content/uploads/2021/08/SEF_FI-1170x531_c.png"
+                      : charity.category == "Special Needs"
+                      ? "https://www.php.com/wp-content/uploads/2018/07/shutterstock_280367384.jpg"
+                      : charity.category == "Environment"
+                      ? "https://www.rochdaleonline.co.uk/uploads/f1/news/img/20221019_145022.jpg"
+                      : ""
+                  }
                   className="w-[100px] h-[100px] object-cover rounded-full"
                 ></img>
               </div>
@@ -34,7 +57,7 @@ const CharityPopup = (props: any) => {
                 </p>
                 <p className="text-md text-gray-700 my-2">{charity.url}</p>
                 <p className="text-md text-gray-700 font-semibold">
-                  S$8.3K raised | 3 open proposals
+                  S$8.3K raised | {data.length} open proposals
                 </p>
               </div>
             </div>

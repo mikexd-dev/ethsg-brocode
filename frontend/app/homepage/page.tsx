@@ -48,6 +48,36 @@ const Homepage = () => {
   const [npoData, setNpoData] = useState<any>(null);
 
   // functions
+  const { data: animalAmount }: any = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getDonationAmountByCategory",
+    args: ["Animals"],
+  });
+
+  const { data: specialNeedsAmount }: any = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getDonationAmountByCategory",
+    args: ["Special Needs"],
+  });
+
+  const { data: familyAmount }: any = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getDonationAmountByCategory",
+    args: ["Family"],
+  });
+
+  const { data: educationAmount }: any = useContractRead({
+    address: voteChainContractAddress,
+    abi: voteChainContractAbi,
+    functionName: "getDonationAmountByCategory",
+    args: ["Education"],
+  });
+
+  console.log(animalAmount, "animalAmount");
+
   const {
     data: npoInfo,
     isSuccess: isNPOInfoSuccess,
@@ -65,21 +95,21 @@ const Homepage = () => {
         await fetchNpo();
       }
     };
-
+    console.log(npoInfo, "npoInfo");
     fetchProposals();
   }, [npoInfo]);
 
   const fetchNpo = async () => {
+    const data: any = [];
     const promises = await npoInfo[1].map(fetchDetails);
     const results = await Promise.all(promises);
 
-    npoInfo[0].map((npo: any) => {
-      results.forEach((result: any) => {
-        result.npoId = npo;
-      });
+    npoInfo[0].map((npo: any, index: any) => {
+      results[index].npoid = npo;
+      data.push(results[index]);
     });
 
-    setNpoData(results);
+    setNpoData(data);
   };
 
   useEffect(() => {
@@ -99,6 +129,8 @@ const Homepage = () => {
     abi: voteChainContractAbi,
     functionName: "getListOfOpenProposals",
   });
+
+  console.log(openProposals, "getListOfOpenProposals");
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -161,8 +193,17 @@ const Homepage = () => {
           <Sidebar openProposals={proposalData} />
         </div>
         <div className="flex w-3/4 flex-col">
-          <Funds />
-          <Charities npo={npoData} />
+          <Funds
+            animals={animalAmount}
+            specialNeeds={specialNeedsAmount}
+            eduction={educationAmount}
+            family={familyAmount}
+          />
+          <Charities
+            npo={npoData}
+            voteChainContractAddress={voteChainContractAddress}
+            voteChainContractAbi={voteChainContractAbi}
+          />
         </div>
       </div>
     </div>
