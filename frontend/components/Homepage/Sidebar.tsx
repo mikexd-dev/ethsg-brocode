@@ -13,6 +13,10 @@ const Sidebar = ({ openProposals }: any) => {
     setShowPopup(true);
   };
 
+  if (openProposals == null) {
+    openProposals = []
+  }
+
   return (
     <>
       <div className="bg-[#1F2937] p-4 rounded-lg">
@@ -30,7 +34,7 @@ const Sidebar = ({ openProposals }: any) => {
         <p className="font-semibold">
           Open Proposals{" "}
           <span className="ml-1 font-normal text-sm text-white bg-[#9CA3AF] px-2 py-1 rounded-full">
-            3
+            {openProposals.length}
           </span>
         </p>
 
