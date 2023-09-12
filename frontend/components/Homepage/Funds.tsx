@@ -23,6 +23,9 @@ const Funds = ({
   education,
   voteChainContractAddress,
   voteChainContractAbi,
+  invokeSuccessDonation,
+  daiPayTokenAddress,
+  daiTokenContractAbi,
 }: any) => {
   const FundsArray = [
     {
@@ -65,9 +68,6 @@ const Funds = ({
   const [funds, setFunds] = useState<any>(FundsArray);
   const [donationAmount, setDonationAmount] = useState<any>(0);
 
-  const daiTokenContractAbi = dai_token;
-  const daiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
-
   const [provider, setProvider] = useState<any>(null);
   const { address, isConnecting, isDisconnected } = useAccount();
 
@@ -84,7 +84,10 @@ const Funds = ({
     tempFunds[1].amount =
       specialNeeds && ethers.utils.formatEther(specialNeeds);
     tempFunds[2].amount = family && ethers.utils.formatEther(family);
+    console.log(education && ethers.utils.formatEther(education), "education");
     tempFunds[3].amount = education && ethers.utils.formatEther(education);
+
+    console.log(tempFunds, "tempFunds");
 
     setFunds([...tempFunds]);
   }, [animals, specialNeeds, family, education]);
@@ -134,6 +137,7 @@ const Funds = ({
     );
     await tx.wait();
     toast.remove();
+    invokeSuccessDonation();
   };
 
   const isAlreadyApproved = async () => {

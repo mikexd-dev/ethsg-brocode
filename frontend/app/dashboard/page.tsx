@@ -7,9 +7,15 @@ import Funds from "@/components/Homepage/Funds";
 import Charities from "@/components/Homepage/Charities";
 import ProposalComponent from "@/components/Proposal";
 import toast, { Toaster } from "react-hot-toast";
-import { useContractEvent, useContractRead, useAccount } from "wagmi";
+import {
+  useContractEvent,
+  useContractRead,
+  useAccount,
+  useChainId,
+} from "wagmi";
 
 import vote_chain from "@/blockchain/vote_chain.json";
+import vote_chain_zkevm from "@/blockchain/vote_chain_zkevm.json";
 import dai_token from "@/blockchain/dai_token.json";
 import { useEffect, useState } from "react";
 import { ethers } from "ethers";
@@ -19,13 +25,38 @@ import { useToast } from "@/components/ui/use-toast";
 import { fadeIn } from "@/lib/motion";
 import { motion } from "framer-motion";
 import ConfettiExplosion from "react-confetti-explosion";
+import { useRouter } from "next/router";
 
-const voteChainContractAbi = vote_chain;
-const voteChainContractAddress = "0x0b85324695860E65308fbC0f165e0404e8d3b05A";
+const polygonVoteChainContractAbi = vote_chain;
+const zkEvmVoteChainContractAbi = vote_chain;
+const polygonVoteChainContractAddress =
+  "0x0b85324695860E65308fbC0f165e0404e8d3b05A";
+const zkEvmVoteChainContractAddress =
+  "0x14998F14F040A36ABcDB9B771c15f6C23E281c51";
+
+const polygonDaiTokenContractAbi = dai_token;
+const polygonDaiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
+
+// TODO
+const zkEvmDaiTokenContractAbi = dai_token;
+const zkEvmDaiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
 
 const Homepage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
+  console.log(useChainId(), "useChainId()");
   const [isExploding, setIsExploding] = useState(false);
+  const [voteChainContractAddress, setVoteChainContractAddress] = useState<any>(
+    polygonVoteChainContractAbi
+  );
+  const [voteChainContractAbi, setVoteChainContractAbi] = useState<any>(
+    polygonVoteChainContractAbi
+  );
+  const [daiTokenContractAddress, setDaiTokenContractAddress] = useState<any>(
+    polygonDaiPayTokenAddress
+  );
+  const [daiTokenContractAbi, setDaiTokenContractAbi] = useState<any>(
+    polygonDaiTokenContractAbi
+  );
 
   useEffect(() => {
     if (window.ethereum) {
@@ -33,6 +64,23 @@ const Homepage = () => {
       setProvider(provider);
     }
   }, []);
+
+  const chainId = useChainId();
+
+  useEffect(() => {
+    if (chainId === 80001) {
+      setVoteChainContractAddress(polygonVoteChainContractAddress);
+      setVoteChainContractAbi(polygonVoteChainContractAbi);
+      setDaiTokenContractAbi(polygonDaiTokenContractAbi);
+      setDaiTokenContractAddress(polygonDaiPayTokenAddress);
+    }
+    if (chainId === 1442) {
+      setVoteChainContractAddress(zkEvmVoteChainContractAddress);
+      setVoteChainContractAbi(zkEvmVoteChainContractAbi);
+      setDaiTokenContractAbi(zkEvmDaiTokenContractAbi);
+      setDaiTokenContractAddress(zkEvmDaiPayTokenAddress);
+    }
+  }, [chainId]);
 
   const eventNames = [
     "NPOUpdated",
@@ -63,97 +111,76 @@ const Homepage = () => {
     },
   });
 
-  useContractEvent({
-    address: voteChainContractAddress,
-    abi: voteChainContractAbi,
-    eventName: "Donated",
-    listener: async (event) => {
-      setIsExploding(false);
-      toast.loading("Updating funds...");
-      console.log("Event data:", event);
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const contract = new ethers.Contract(
-        voteChainContractAddress,
-        voteChainContractAbi,
-        provider
-      );
-      const animalAmount = await contract.getDonationAmountByCategory(
-        "Animals"
-      );
-      const specialAmount = await contract.getDonationAmountByCategory(
-        "Special Needs"
-      );
-      const familyAmount = await contract.getDonationAmountByCategory("Family");
-      const educationAmount = await contract.getDonationAmountByCategory(
-        "Education"
-      );
-      console.log(
-        animalAmount,
-        "animalAmount",
-        specialAmount,
-        "specialAmount",
-        familyAmount,
-        "familyAmount",
-        educationAmount,
-        "educationAmount"
-      );
-      setFunds({
-        animals: animalAmount,
-        specialNeeds: specialAmount,
-        family: familyAmount,
-        education: educationAmount,
-      });
-      toast.remove();
-      toast.success("Donation Successful!");
-      setIsExploding(true);
-    },
-  });
-
   const [provider, setProvider] = useState<any>(null);
   const [proposalData, setProposalData] = useState<any>(null);
   const [npoData, setNpoData] = useState<any>(null);
   const [funds, setFunds] = useState<any>(null);
+  const [isDonated, setIsDonated] = useState<any>(false);
 
-  // functions
-  const { data: animalAmount }: any = useContractRead({
-    address: voteChainContractAddress,
-    abi: voteChainContractAbi,
-    functionName: "getDonationAmountByCategory",
-    args: ["Animals"],
-  });
+  // useContractEvent({
+  //   address: voteChainContractAddress,
+  //   abi: voteChainContractAbi,
+  //   eventName: "Donated",
+  //   listener: async (event) => {
+  //     setTimeout(async () => {
+  //       setIsExploding(false);
+  //       toast.loading("Updating funds...");
+  //       console.log("Event data:", event);
+  //       await fetchFunds();
+  //       toast.remove();
+  //       toast.success("Donation Successful!");
+  //       setIsExploding(true);
+  //     }, 1500);
+  //   },
+  // });
 
-  const { data: specialNeedsAmount }: any = useContractRead({
-    address: voteChainContractAddress,
-    abi: voteChainContractAbi,
-    functionName: "getDonationAmountByCategory",
-    args: ["Special Needs"],
-  });
+  const invokeSuccessDonation = async () => {
+    setIsExploding(false);
+    toast.loading("Updating funds...");
+    await fetchFunds();
+    toast.remove();
+    toast.success("Donation Successful!");
+    setIsExploding(true);
+  };
 
-  const { data: familyAmount }: any = useContractRead({
-    address: voteChainContractAddress,
-    abi: voteChainContractAbi,
-    functionName: "getDonationAmountByCategory",
-    args: ["Family"],
-  });
-
-  const { data: educationAmount }: any = useContractRead({
-    address: voteChainContractAddress,
-    abi: voteChainContractAbi,
-    functionName: "getDonationAmountByCategory",
-    args: ["Education"],
-  });
-
-  useEffect(() => {
-    console.log(animalAmount, "animalAmount");
-    setFunds({
+  const fetchFunds = async () => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(
+      voteChainContractAddress,
+      voteChainContractAbi,
+      provider
+    );
+    const animalAmount = await contract.getDonationAmountByCategory("Animals");
+    const specialAmount = await contract.getDonationAmountByCategory(
+      "Special Needs"
+    );
+    const familyAmount = await contract.getDonationAmountByCategory("Family");
+    const educationAmount = await contract.getDonationAmountByCategory(
+      "Education"
+    );
+    console.log(
+      ethers.utils.formatEther(animalAmount),
+      "animalAmount",
+      ethers.utils.formatEther(specialAmount),
+      "specialAmount",
+      ethers.utils.formatEther(familyAmount),
+      "familyAmount",
+      ethers.utils.formatEther(educationAmount),
+      "educationAmount",
+      "mike here"
+    );
+    const tempFunds = {
       animals: animalAmount,
-      specialNeeds: specialNeedsAmount,
+      specialNeeds: specialAmount,
       family: familyAmount,
       education: educationAmount,
-    });
-  }, [animalAmount, specialNeedsAmount, familyAmount, educationAmount]);
+    };
+    setFunds({ ...tempFunds });
+  };
 
-  console.log(animalAmount, "animalAmount");
+  useEffect(() => {
+    fetchFunds();
+  }, [chainId, provider, setIsDonated]);
 
   const {
     data: npoInfo,
@@ -277,10 +304,13 @@ const Homepage = () => {
           <Funds
             animals={funds && funds.animals}
             specialNeeds={funds && funds.specialNeeds}
-            eduction={funds && funds.education}
+            education={funds && funds.education}
             family={funds && funds.family}
             voteChainContractAbi={voteChainContractAbi}
             voteChainContractAddress={voteChainContractAddress}
+            invokeSuccessDonation={invokeSuccessDonation}
+            daiPayTokenAddress={daiTokenContractAddress}
+            daiTokenContractAbi={daiTokenContractAbi}
           />
           <Charities
             npo={npoData}

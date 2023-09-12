@@ -6,16 +6,7 @@ import {
   w3mProvider,
 } from "@web3modal/ethereum";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
-import {
-  polygonMumbai,
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  zora,
-  localhost,
-} from "wagmi/chains";
+import { polygonMumbai, polygonZkEvmTestnet } from "wagmi/chains";
 
 import {
   ConnectKitProvider,
@@ -42,16 +33,7 @@ type WagmiProviderType = {
   children: React.ReactNode;
 };
 
-const chains = [
-  polygonMumbai,
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  zora,
-  localhost,
-];
+const chains = [polygonMumbai, polygonZkEvmTestnet];
 const projectId = process.env.NEXT_PUBLIC_W3C_PID;
 
 // const { connectors } = getDefaultWallets({
