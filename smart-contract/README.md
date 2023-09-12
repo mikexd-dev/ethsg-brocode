@@ -16,12 +16,12 @@ VoteChain is a blockchain-enabled, vote-weighted donation platform that aims to 
 ## Deployed Smartcontracts:
 Polygon Mumbai
 ```
-https://mumbai.polygonscan.com/address/0xbdB220a0B2823E00e27C695346dF1FC2521320Fd
+https://mumbai.polygonscan.com/address/0x0b85324695860E65308fbC0f165e0404e8d3b05A
 ```
 
 Polygon zkEVM Testnet
 ```
-https://testnet-zkevm.polygonscan.com/address/0xc69e6E059a551d146175ED103Fd01266a647f777
+https://testnet-zkevm.polygonscan.com/address/0x14998F14F040A36ABcDB9B771c15f6C23E281c51
 ```
 
 ## Smart Contracts
