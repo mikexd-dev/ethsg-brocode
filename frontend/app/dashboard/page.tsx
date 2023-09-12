@@ -39,7 +39,7 @@ const polygonDaiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
 
 // TODO
 const zkEvmDaiTokenContractAbi = dai_token;
-const zkEvmDaiPayTokenAddress = "0xE1FD11Eb2D3b2eaa80E5F6db10374AA71Fe2C55C";
+const zkEvmDaiPayTokenAddress = "0x567ff3678a8C13ba42553E605ffa02Fb4CDa0EdB";
 
 const Homepage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
@@ -180,7 +180,7 @@ const Homepage = () => {
 
   useEffect(() => {
     fetchFunds();
-  }, [chainId, provider, setIsDonated]);
+  }, [chainId, provider, setIsDonated, chainId]);
 
   const {
     data: npoInfo,
@@ -201,7 +201,7 @@ const Homepage = () => {
     };
     console.log(npoInfo, "npoInfo");
     fetchProposals();
-  }, [npoInfo]);
+  }, [npoInfo, chainId]);
 
   const fetchNpo = async () => {
     const data: any = [];
@@ -237,7 +237,7 @@ const Homepage = () => {
     };
 
     fetchProposals();
-  }, [openProposals, provider]);
+  }, [openProposals, provider, chainId]);
 
   const fetchProposalData = async (proposal: any) => {
     if (provider) {
