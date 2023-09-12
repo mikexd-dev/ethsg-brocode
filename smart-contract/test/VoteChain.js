@@ -104,10 +104,13 @@ describe('VoteChain', async function () {
             const proposalId = createProposalTx.logs[0].args.proposalId;
 
             // Vote Proposal - Donor 1
-            await this.VoteChain.voteToProposal(proposalId, { from: donor1 });
+            await this.VoteChain.voteToProposal(proposalId, true, { from: donor1 });
 
             // Vote Proposal - Donor 2
-            await this.VoteChain.voteToProposal(proposalId, { from: donor2 });
+            await this.VoteChain.voteToProposal(proposalId, true, { from: donor2 });
+
+            // Vote Proposal - Donor 2
+            await this.VoteChain.voteToProposal(proposalId, false, { from: donor3 });
 
             // Finalise Proposal
             await this.VoteChain.finaliseProposal(proposalId, { from: npo1 });

@@ -41,7 +41,10 @@ contract VoteChain is Ownable, ReentrancyGuard {
     mapping(bytes32 => bool) internal approvedProposals;
 
     // Mapping of Proposals & No.of Votes
-    mapping(bytes32 => uint256) internal voteCountForProposal;
+    mapping(bytes32 => uint256) internal upVoteCountForProposal;
+
+    // Mapping of Downvote Count for Proposal
+    mapping(bytes32 => uint256) internal downVoteCountForProposal;
 
     // Total No.of Proposals
     uint256 internal totalProposals;
@@ -157,7 +160,10 @@ contract VoteChain is Ownable, ReentrancyGuard {
     }
 
     // Vote for a Proposal
-    function voteToProposal(bytes32 proposalId) external nonReentrant {
+    function voteToProposal(
+        bytes32 proposalId,
+        bool vote
+    ) external nonReentrant {
         uint256 totalProposedAmount = getProposedAmountByProposalId(proposalId);
         uint256 balanceInCategory = donationAmountByCategory[
             proposalCategories[proposalId]
@@ -167,14 +173,18 @@ contract VoteChain is Ownable, ReentrancyGuard {
             "VoteToProposal:: Insufficiant Funds in the Category"
         );
         require(isDonor(msg.sender), "VoteToProposal:: Only donors can vote");
-        voteCountForProposal[proposalId]++;
+        if (vote) {
+            upVoteCountForProposal[proposalId]++;
+        } else {
+            downVoteCountForProposal[proposalId]++;
+        }
         IVoteChainNFT(voterNFT).mint(msg.sender);
         emit Voted(proposalId, msg.sender, block.timestamp);
     }
 
     // Finalize the Proposal - anyone can call as long as the votes met the criteria
     function finaliseProposal(bytes32 proposalId) external nonReentrant {
-        uint256 totalVotes = voteCountForProposal[proposalId];
+        uint256 totalVotes = upVoteCountForProposal[proposalId];
         uint256 noOfUniqueDonors = uniqueDonorCount[proposalId];
         address payToken = proposalDonatedToken[proposalId];
         require(
@@ -347,8 +357,11 @@ contract VoteChain is Ownable, ReentrancyGuard {
     // Get the No.of Votes for Proposal
     function getVoteCountForProposal(
         bytes32 proposalId
-    ) public view returns (uint256) {
-        return voteCountForProposal[proposalId];
+    ) public view returns (uint256, uint256) {
+        return (
+            upVoteCountForProposal[proposalId],
+            downVoteCountForProposal[proposalId]
+        );
     }
 
     // Get List of Vendor Wallets for Proposal

@@ -21,7 +21,7 @@
     "dotenv": "^16.3.1",
     "ethers": "^6.7.1",
     "mocha": "^10.2.0",
-    "truffle-plugin-verify": "0.6.5",
+    "truffle-plugin-verify": "0.5.33",
     "web3": "1.10.0"
   },
   "devDependencies": {
