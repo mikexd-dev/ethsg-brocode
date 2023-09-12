@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 import ConfettiExplosion from "react-confetti-explosion";
 
 const voteChainContractAbi = vote_chain;
-const voteChainContractAddress = "0xbdB220a0B2823E00e27C695346dF1FC2521320Fd";
+const voteChainContractAddress = "0x0b85324695860E65308fbC0f165e0404e8d3b05A";
 
 const Homepage = () => {
   const { address, isConnecting, isDisconnected } = useAccount();
