@@ -201,18 +201,48 @@
   {
     "inputs": [],
     "name": "NPONFT",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "category", "type": "string" },
-      { "internalType": "address[]", "name": "vendors", "type": "address[]" },
-      { "internalType": "uint256[]", "name": "amounts", "type": "uint256[]" },
-      { "internalType": "string", "name": "invoices", "type": "string" },
-      { "internalType": "address", "name": "token", "type": "address" },
-      { "internalType": "string", "name": "data", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "internalType": "address[]",
+        "name": "vendors",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "amounts",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "string",
+        "name": "invoices",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "data",
+        "type": "string"
+      }
     ],
     "name": "createProposal",
     "outputs": [],
@@ -221,9 +251,21 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "category", "type": "string" },
-      { "internalType": "address", "name": "token", "type": "address" },
-      { "internalType": "uint256", "name": "amount", "type": "uint256" }
+      {
+        "internalType": "string",
+        "name": "category",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
     ],
     "name": "donate",
     "outputs": [],
@@ -233,13 +275,23 @@
   {
     "inputs": [],
     "name": "donorNFT",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "finaliseProposal",
     "outputs": [],
@@ -248,27 +300,57 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "category", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "category",
+        "type": "string"
+      }
     ],
     "name": "getDonationAmountByCategory",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "wallet", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
     ],
     "name": "getFirstDonation",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "npo", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "npo",
+        "type": "address"
+      }
+    ],
     "name": "getListOfAllProposalsByNPO",
     "outputs": [
-      { "internalType": "bytes32[]", "name": "", "type": "bytes32[]" }
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -277,7 +359,11 @@
     "inputs": [],
     "name": "getListOfOpenProposals",
     "outputs": [
-      { "internalType": "bytes32[]", "name": "", "type": "bytes32[]" }
+      {
+        "internalType": "bytes32[]",
+        "name": "",
+        "type": "bytes32[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
@@ -286,153 +372,314 @@
     "inputs": [],
     "name": "getNPOInfo",
     "outputs": [
-      { "internalType": "address[]", "name": "", "type": "address[]" },
-      { "internalType": "string[]", "name": "", "type": "string[]" }
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "npo", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "npo",
+        "type": "address"
+      }
+    ],
     "name": "getNPOStatus",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "catogery", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "catogery",
+        "type": "bytes32"
+      }
     ],
     "name": "getProposalCategories",
-    "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getProposalData",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getProposalDonatedToken",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "uint256", "name": "number", "type": "uint256" }
+      {
+        "internalType": "uint256",
+        "name": "number",
+        "type": "uint256"
+      }
     ],
     "name": "getProposalId",
     "outputs": [
-      { "internalType": "bytes32", "name": "result", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "result",
+        "type": "bytes32"
+      }
     ],
     "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getProposedAmountByProposalId",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getProposerOfProposalId",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "getTotalProposals",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getUniqueDonorCount",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getVendorAmountsForPorposal",
     "outputs": [
-      { "internalType": "uint256[]", "name": "", "type": "uint256[]" }
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getVendorInvoices",
-    "outputs": [{ "internalType": "string", "name": "", "type": "string" }],
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getVendorWalletsForPorposal",
     "outputs": [
-      { "internalType": "address[]", "name": "", "type": "address[]" }
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "getVoteCountForProposal",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "wallet", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "wallet",
+        "type": "address"
+      }
     ],
     "name": "isDonor",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      }
     ],
     "name": "isProposalApproved",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
   {
     "inputs": [],
     "name": "owner",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   },
@@ -445,18 +692,30 @@
   },
   {
     "inputs": [
-      { "internalType": "string", "name": "source", "type": "string" }
+      {
+        "internalType": "string",
+        "name": "source",
+        "type": "string"
+      }
     ],
     "name": "stringToKeccak256",
     "outputs": [
-      { "internalType": "bytes32", "name": "result", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "result",
+        "type": "bytes32"
+      }
     ],
     "stateMutability": "pure",
     "type": "function"
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "newOwner", "type": "address" }
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
     ],
     "name": "transferOwnership",
     "outputs": [],
@@ -465,8 +724,16 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_donor", "type": "address" },
-      { "internalType": "bool", "name": "_status", "type": "bool" }
+      {
+        "internalType": "address",
+        "name": "_donor",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_status",
+        "type": "bool"
+      }
     ],
     "name": "updateDonor",
     "outputs": [],
@@ -474,7 +741,13 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "nft", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nft",
+        "type": "address"
+      }
+    ],
     "name": "updateDonorNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -482,9 +755,21 @@
   },
   {
     "inputs": [
-      { "internalType": "address", "name": "_npo", "type": "address" },
-      { "internalType": "bool", "name": "_status", "type": "bool" },
-      { "internalType": "string", "name": "data", "type": "string" }
+      {
+        "internalType": "address",
+        "name": "_npo",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_status",
+        "type": "bool"
+      },
+      {
+        "internalType": "string",
+        "name": "data",
+        "type": "string"
+      }
     ],
     "name": "updateNPO",
     "outputs": [],
@@ -492,14 +777,26 @@
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "nft", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nft",
+        "type": "address"
+      }
+    ],
     "name": "updateNPONFT",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [{ "internalType": "address", "name": "nft", "type": "address" }],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "nft",
+        "type": "address"
+      }
+    ],
     "name": "updateVoterNFT",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -507,7 +804,16 @@
   },
   {
     "inputs": [
-      { "internalType": "bytes32", "name": "proposalId", "type": "bytes32" }
+      {
+        "internalType": "bytes32",
+        "name": "proposalId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bool",
+        "name": "vote",
+        "type": "bool"
+      }
     ],
     "name": "voteToProposal",
     "outputs": [],
@@ -517,7 +823,13 @@
   {
     "inputs": [],
     "name": "voterNFT",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
     "stateMutability": "view",
     "type": "function"
   }

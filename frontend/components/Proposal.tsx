@@ -31,8 +31,8 @@ const ProposalPopup = (props: any) => {
     }
   }, []);
 
-  const vote = async () => {
-    toast.loading("Waiting for txn...");
+  const vote = async (status: string) => {
+    toast.loading("Upvote Waiting for txn...");
 
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
@@ -41,10 +41,15 @@ const ProposalPopup = (props: any) => {
       signer
     );
     // const tx = await contract.getVendorAmountsForPorposal(proposal.proposalId);
-    const tx = await contract.voteToProposal(proposal.proposalId);
-    await tx.wait();
-    setIsVoted(true);
+    if (status == 'true') {
+      const upVoteTx = await contract.voteToProposal(proposal.proposalId, true);
+      await upVoteTx.wait();
+    } else {
+      const downVoteTx = await contract.voteToProposal(proposal.proposalId, false);
+      await downVoteTx.wait();
+    }
 
+    setIsVoted(true);
     toast.remove();
   };
 
@@ -110,14 +115,16 @@ const ProposalPopup = (props: any) => {
                       variant="default"
                       className="bg-green-500 py-0 w-1/2"
                       size="sm"
-                      onClick={vote}
+                      onClick={() => { vote('true'); }}
                     >
+
                       Approve
                     </Button>
                     <Button
                       variant="destructive"
                       className="py-0 w-1/2"
                       size="sm"
+                      onClick={() => { vote('false'); }}
                     >
                       Reject
                     </Button>
